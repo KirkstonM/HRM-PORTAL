@@ -29,3 +29,16 @@ export const BASE_ROUTES = [
     Component: FilesPage
   }
 ]
+
+const ADMIN_ROUTES = [
+  ...BASE_ROUTES,
+  {
+    Path: APP_ROUTES.ADMIN,
+    Component: ''
+  }
+]
+
+const LOGIN_ROUTES = {
+  Path: APP_ROUTES.LOGIN,
+  Component: LoginPage
+}
