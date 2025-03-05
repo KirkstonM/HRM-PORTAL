@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
-  locale: [],
+  locale: {},
   theme: 'dark'
 }
 
@@ -12,8 +12,8 @@ const AppSlice = createSlice({
     toggleTheme: (state) => {
       state.theme = state.theme === 'dark' ? 'light' : 'dark'
     },
-    loadLocale: (state, payload) => {
-      state.locale.push(payload)
+    loadLocale: (state, action) => {
+      state.locale = action.payload
     }
   }
 })

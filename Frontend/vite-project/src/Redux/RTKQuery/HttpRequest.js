@@ -4,7 +4,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 export const baseHttpRequest = createApi({
   reducerPath: 'App',
   baseQuery: fetchBaseQuery({
-    baseUrl: ''
+    baseUrl: 'http://localhost:5000/'
   }),
   endpoints: (builder) => ({
     baseQuery: builder.query({
@@ -14,14 +14,14 @@ export const baseHttpRequest = createApi({
         params: params
       })
     }),
-    baseMutation: (builder) => ({
-      query: ({ endpoint, body, method }) => ({
+    baseMutation: builder.mutation({
+      query: ({ endpoint, params, method }) => ({
         url: endpoint,
         method: method,
-        body: body
+        params: params
       })
     })
   })
 })
 
-const { useBaseQueryQuery, useBaseMutationMutation } = baseHttpRequest
+export const { useBaseQueryQuery, useBaseMutationMutation } = baseHttpRequest

@@ -3,7 +3,6 @@ export const APP_ROUTES = {
   HOME: 'home',
   MY_INFO: 'employee/:id',
   PEOPLE: 'people',
-  FILES: 'files'
+  FILES: 'files',
+  ADMIN: 'admin'
 }
-
-export const API_ENDPOINTS = {}
