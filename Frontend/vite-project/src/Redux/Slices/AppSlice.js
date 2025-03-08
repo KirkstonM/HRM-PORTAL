@@ -2,7 +2,8 @@ import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
   locale: {},
-  theme: 'dark'
+  theme: 'dark',
+  token: true
 }
 
 const AppSlice = createSlice({
@@ -14,9 +15,12 @@ const AppSlice = createSlice({
     },
     loadLocale: (state, action) => {
       state.locale = action.payload
+    },
+    toggleToken: (state) => {
+      state.token = true
     }
   }
 })
 
-export const { toggleTheme, loadLocale } = AppSlice.actions
+export const { toggleTheme, loadLocale, toggleToken } = AppSlice.actions
 export default AppSlice.reducer

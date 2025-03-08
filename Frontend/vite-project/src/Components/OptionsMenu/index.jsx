@@ -8,7 +8,7 @@ import { Box } from '@mui/material'
 const options = [
   'Account Settings',
   'Change Password',
-  '2-Step Login',
+  '2-Step Index',
   'Log Out'
 ]
 

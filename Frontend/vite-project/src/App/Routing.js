@@ -1,44 +1,54 @@
 import React, { lazy } from 'react'
-import { APP_ROUTES } from '../Constants/Routes/Routes.js'
+import { AUTH_ROUTES, LOGIN_ROUTES } from '@Constants/Routes'
 
-const LoginPage = lazy(() => import('../Pages/Login/Login.jsx'))
-const HomePage = lazy(() => import('../Pages/Home/Home.jsx'))
-const MyInfoPage = lazy(() => import('../Pages/MyInfo/MyInfo.jsx'))
-const PeoplePage = lazy(() => import('../Pages/People/People.jsx'))
-const FilesPage = lazy(() => import('../Pages/Files/Files.jsx'))
+const LoginPage = lazy(() => import('@Pages/UserOnboarding/Login'))
+const SignupPage = lazy(() => import('@Pages/UserOnboarding/Signup'))
+const ResetPassword = lazy(() => import('@Pages/UserOnboarding/ResetPassword'))
+const ForgotPassword = lazy(
+  () => import('@Pages/UserOnboarding/ForgotPassword')
+)
 
-export const BASE_ROUTES = [
+const HomePage = lazy(() => import('@Pages/Home'))
+const MyInfoPage = lazy(() => import('@Pages/MyInfo'))
+const PeoplePage = lazy(() => import('@Pages/People'))
+const FilesPage = lazy(() => import('@Pages/Files'))
+
+const ONBOARDING_ROUTES = [
   {
-    Path: APP_ROUTES.LOGIN,
+    Path: LOGIN_ROUTES.LOGIN,
     Component: LoginPage
   },
   {
-    Path: APP_ROUTES.HOME,
+    Path: LOGIN_ROUTES.SIGNUP,
+    Component: SignupPage
+  },
+  {
+    Path: LOGIN_ROUTES.FORGOT_PASSWORD,
+    Component: ForgotPassword
+  },
+  {
+    Path: LOGIN_ROUTES.RESET_PASSWORD,
+    Component: ResetPassword
+  }
+]
+
+const AUTH_BASE_ROUTES = [
+  {
+    Path: AUTH_ROUTES.HOME,
     Component: HomePage
   },
   {
-    Path: APP_ROUTES.MY_INFO,
+    Path: AUTH_ROUTES.MY_INFO,
     Component: MyInfoPage
   },
   {
-    Path: APP_ROUTES.PEOPLE,
+    Path: AUTH_ROUTES.PEOPLE,
     Component: PeoplePage
   },
   {
-    Path: APP_ROUTES.FILES,
+    Path: AUTH_ROUTES.FILES,
     Component: FilesPage
   }
 ]
 
-const ADMIN_ROUTES = [
-  ...BASE_ROUTES,
-  {
-    Path: APP_ROUTES.ADMIN,
-    Component: ''
-  }
-]
-
-const LOGIN_ROUTES = {
-  Path: APP_ROUTES.LOGIN,
-  Component: LoginPage
-}
+export { AUTH_BASE_ROUTES, ONBOARDING_ROUTES }

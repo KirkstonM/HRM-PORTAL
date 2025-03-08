@@ -1,7 +1,20 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import path from 'path'
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [react()]
+  plugins: [react()],
+  resolve: {
+    alias: {
+      '@App': path.resolve(__dirname, 'src/App/'),
+      '@Components': path.resolve(__dirname, 'src/Components/'),
+      '@Constants': path.resolve(__dirname, 'src/Constants/'),
+      '@Forms': path.resolve(__dirname, 'src/Forms/'),
+      '@Pages': path.resolve(__dirname, 'src/Pages/'),
+      '@Redux': path.resolve(__dirname, 'src/Redux/'),
+      '@Validations': path.resolve(__dirname, 'src/Validations/'),
+      '@Assets': path.resolve(__dirname, 'src/assets/')
+    }
+  }
 })

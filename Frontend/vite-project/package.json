@@ -18,12 +18,15 @@
     "@mui/icons-material": "^6.4.4",
     "@mui/material": "^6.4.3",
     "@reduxjs/toolkit": "^2.5.1",
+    "chart.js": "^4.4.8",
     "formik": "^2.4.6",
     "nodemailer": "^6.10.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "react-otp-input": "^3.1.1",
     "react-redux": "^9.2.0",
     "react-router-dom": "^7.1.5",
+    "sweetalert2": "^11.17.2",
     "yup": "^1.6.1"
   },
   "devDependencies": {
