@@ -11,7 +11,7 @@ import userRoutes from './Routes/user.routes.js'
 const app = express()
 
 app.use(express.json())
-app.use(cors())
+app.use(cors({ origin: 'http://localhost:5175', credentials: true }))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(cookieParser()) //think of it as to decode incoming cookies in middleware
