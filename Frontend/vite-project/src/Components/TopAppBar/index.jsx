@@ -25,7 +25,7 @@ const TopAppBar = () => {
       <AppBar position="static">
         <Toolbar>
           <Typography variant="p" sx={{ flexGrow: 1 }}>
-            Dashboard > {pathname.slice(1)}
+            {/*Dashboard > {pathname.slice(1)}*/}
           </Typography>
           <Box sx={{ flexGrow: 1 }} />
           <Box

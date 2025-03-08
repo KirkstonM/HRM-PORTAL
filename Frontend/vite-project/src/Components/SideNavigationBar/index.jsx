@@ -18,7 +18,7 @@ import InfoIcon from '@mui/icons-material/Info'
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt'
 import FileCopyIcon from '@mui/icons-material/FileCopy'
 import { NavLink } from 'react-router-dom'
-import OptionsMenu from '../OptionsMenu/OptionsMenu.jsx'
+import Index from '../OptionsMenu/index.jsx'
 
 const drawerWidth = 240
 
@@ -116,7 +116,7 @@ const SideNavigationBar = () => {
               riley@email.com
             </Typography>
           </Box>
-          <OptionsMenu />
+          <Index />
         </Stack>
       </Drawer>
     </Box>

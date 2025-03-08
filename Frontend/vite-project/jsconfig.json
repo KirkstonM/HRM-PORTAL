@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "types": ["node"],
+    "baseUrl": ".",
+    "paths": {
+      "@App/*": ["src/App/*"],
+      "@Components/*": ["src/Components/*"],
+      "@Constants/*": ["src/Constants/*"],
+      "@Forms/*": ["src/Forms/*"],
+      "@Pages/*": ["src/Pages/*"],
+      "@Redux/*": ["src/Redux/*"],
+      "@Validations/*": ["src/Validations/*"],
+      "@Assets/*": ["src/assets/*"]
+    },
+    "moduleResolution": "node",
+    "jsx": "react",
+    "allowSyntheticDefaultImports": true
+  },
+  "include": ["**/*.js", "**/*.jsx"]
+}

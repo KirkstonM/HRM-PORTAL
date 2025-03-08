@@ -2,7 +2,7 @@ import React from 'react'
 import { Form, useFormik } from 'formik'
 import { Box, Button, Select, TextField, Typography } from '@mui/material'
 import { useSelector } from 'react-redux'
-import { selectEmployeeDetails } from '../Redux/Selectors/MyInfoSelector.jsx'
+import { selectEmployeeDetails } from '@Redux/Selectors/MyInfoSelector.jsx'
 import MenuItem from '@mui/material/MenuItem'
 // import { DatePjicker } from '@mui/x-date-pickers/DatePicker';
 const PersonalInfoForm = () => {

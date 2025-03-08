@@ -4,7 +4,12 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 export const baseHttpRequest = createApi({
   reducerPath: 'App',
   baseQuery: fetchBaseQuery({
-    baseUrl: 'http://localhost:5000/'
+    baseUrl: import.meta.env.VITE_API_URL,
+    prepareHeaders: (headers) => {
+      headers.set('Content-Type', 'application/json')
+      return headers
+    },
+    credentials: 'include'
   }),
   endpoints: (builder) => ({
     baseQuery: builder.query({
@@ -12,16 +17,54 @@ export const baseHttpRequest = createApi({
         url: endpoint,
         method: method,
         params: params
-      })
+      }),
+      transformResponse: ({ data, ...response }) => {
+        return { ...response, ...data }
+      },
+      transformErrorResponse: ({ data, ...response }) => {
+        return { ...data, ...response }
+      }
     }),
     baseMutation: builder.mutation({
-      query: ({ endpoint, params, method }) => ({
+      query: ({ endpoint, method, body }) => ({
         url: endpoint,
         method: method,
-        params: params
-      })
+        body: body
+      }),
+      transformResponse: ({ data, ...response }) => {
+        return { ...response, ...data }
+      },
+      transformErrorResponse: ({ data, ...response }) => {
+        return { ...data, ...response }
+      }
     })
   })
 })
 
 export const { useBaseQueryQuery, useBaseMutationMutation } = baseHttpRequest
+
+/*
+*  const [payload, response ] = useBaseMutationMutation()
+*-------response-------------
+*   {
+    "status": "uninitialized",
+      "isUninitialized": true,
+      "isLoading": false,
+      "isSuccess": false,
+      "isError": false
+  }
+
+* -------payload-------------
+* onSubmit: async (values) => {
+        await payload({
+          endpoint: API_ENDPOINTS.SIGNUP,
+          method: 'POST',
+          body: values
+        })
+      }
+      *
+      *
+      *
+      * const { data, error, isLoading } = useFetchDataQuery({ endpoint: '/users', params: { id: 1 } });
+      * const [postData, { data, error, isLoading }] = usePostDataMutation();
+* */
