@@ -31,6 +31,9 @@ export const selectEmployeeDetails = createSelector(
     mobilePhone: employee.mobilePhone || '',
     homePhone: employee.homePhone || '',
     workEmail: employee.workEmail || '',
-    homeEmail: employee.homeEmail || ''
+    homeEmail: employee.homeEmail || '',
+    linkedIn: employee.linkedIn || '',
+    twitter: employee.twitter || '',
+    facebook: employee.facebook || ''
   })
 )
