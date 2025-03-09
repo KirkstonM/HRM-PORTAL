@@ -14,22 +14,6 @@ function App() {
       mode: defaultTheme
     }
   })
-  // const {
-  //   data: ResponseData,
-  //   error,
-  //   isLoading
-  // } = useBaseQueryQuery({
-  //   endpoint: 'locale'
-  // })
-
-  // const data = ResponseData?.data[0]?.values
-
-  // useEffect(() => {
-  //   dispatch(loadEmployeeData(mockEmployeeData))
-  //   if (data) {
-  //     dispatch(loadLocale(data))
-  //   }
-  // }, [data, dispatch])
   return (
     <>
       <ThemeProvider theme={darkTheme}>

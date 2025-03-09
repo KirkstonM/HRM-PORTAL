@@ -4,6 +4,7 @@ import DocumentsTab from '@Components/MyInfoSection/MyInfoMainTab/Documents'
 import JobTab from '@Components/MyInfoSection/MyInfoMainTab/Job'
 import BenefitsTab from '@Components/MyInfoSection/MyInfoMainTab/Benefits'
 import TimeOffTab from '@Components/MyInfoSection/MyInfoMainTab/TimeOff'
+import EmergencyContact from '@Components/MyInfoSection/MyInfoMainTab/EmergencyContact'
 import { Box, Container } from '@mui/material'
 import MyInfoTabs from '@Components/MyInfoSection/MyInfoTabs'
 
@@ -21,6 +22,7 @@ const MyInfoMainTab = () => {
           {activeTab === 'Job' && <JobTab />}
           {activeTab === 'Benefits' && <BenefitsTab />}
           {activeTab === 'Time off' && <TimeOffTab />}
+          {activeTab === 'Emergency' && <EmergencyContact />}
         </Box>
       </Box>
     </>

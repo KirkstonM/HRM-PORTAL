@@ -36,7 +36,12 @@ const LoginForm = () => {
     if (isError) {
       Swal.fire({
         title: `${error?.msg}`,
-        icon: 'error'
+        icon: 'error',
+        confirmButtonText: 'Register User'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          navigate(LOGIN_ROUTES.SIGNUP)
+        }
       })
     }
   }, [isError, error])

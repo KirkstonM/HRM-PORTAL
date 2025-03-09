@@ -42,44 +42,44 @@ const PersonalInfoForm = () => {
       />
       <Box>
         <TextField
-          id={values.firstName}
+          id={values.first_name}
           label="First Name"
           variant="outlined"
           type="text"
           name={'firstName'}
           onChange={handleChange}
           onBlur={handleBlur}
-          value={values.firstName}
+          value={values.first_name}
         />
         <TextField
-          id={values.middleName}
+          id={values.middle_name}
           label="Middle Name"
           variant="outlined"
           type="text"
           name={'middleName'}
           onChange={handleChange}
           onBlur={handleBlur}
-          value={values.middleName}
+          value={values.middle_name}
         />
         <TextField
-          id={values.lastName}
+          id={values.last_name}
           label="Last Name"
           variant="outlined"
           type="text"
           name={'lastName'}
           onChange={handleChange}
           onBlur={handleBlur}
-          value={values.lastName}
+          value={values.last_name}
         />
         <TextField
-          id={values.preferredName}
+          id={values.preferred_name}
           label="Preffered Name"
           variant="outlined"
           type="text"
           name={'preferredName'}
           onChange={handleChange}
           onBlur={handleBlur}
-          value={values.preferredName}
+          value={values.preferred_name}
         />
       </Box>
       {/* DATE PICKER + AGE */}
@@ -88,7 +88,7 @@ const PersonalInfoForm = () => {
           select
           id={values.gender}
           label="Gender"
-          value={values.gender}
+          defaultValue={values.gender}
         >
           <MenuItem value={'Male'}>Male</MenuItem>
           <MenuItem value={'Female'}>Female</MenuItem>
@@ -96,9 +96,9 @@ const PersonalInfoForm = () => {
 
         <TextField
           select
-          id={values.maritalStatus}
+          id={values.marital_status}
           label="Marital Status"
-          value={values.maritalStatus}
+          defaultValue={values.marital_status}
         >
           <MenuItem value={'Single'}>Single</MenuItem>
           <MenuItem value={'Married'}>Married</MenuItem>
@@ -107,9 +107,9 @@ const PersonalInfoForm = () => {
 
       <TextField
         select
-        id={values.residencyStatus}
+        id={values.address_details}
         label="Residency Status"
-        value={values.residencyStatus}
+        defaultValue={values.address_details}
       >
         <MenuItem value={'Citizen'}>Citizen</MenuItem>
         <MenuItem value={'Temporary'}>Temporary</MenuItem>
@@ -119,152 +119,160 @@ const PersonalInfoForm = () => {
         select
         id={values.nationality}
         label="Nationality"
-        value={values.nationality}
+        defaultValue={values.nationality}
       >
         <MenuItem value={'SriLankan'}>Sri Lankan</MenuItem>
       </TextField>
 
       <Typography variant="h5"> Address </Typography>
       <TextField
-        id={values.street_01}
+        id={values.address_details.street_01}
         label="Street 01"
         variant="outlined"
         type="text"
         name={'street_01'}
         onChange={handleChange}
         onBlur={handleBlur}
-        value={values.street_01}
+        value={values.address_details.street_01}
       />
       <TextField
-        id={values.street_02}
+        id={values.address_details.street_02}
         label="Street 02"
         variant="outlined"
         type="text"
         name={'street_02'}
         onChange={handleChange}
         onBlur={handleBlur}
-        value={values.street_02}
+        value={values.address_details.street_02}
       />
       <Box>
         <TextField
-          id={values.city}
+          id={values.address_details.city}
           label="City"
           variant="outlined"
           type="text"
           name={'city'}
           onChange={handleChange}
           onBlur={handleBlur}
-          value={values.city}
+          value={values.address_details.city}
         />
         <TextField
-          id={values.province}
+          id={values.address_details.province}
           label="Province"
           variant="outlined"
           type="text"
           name={'province'}
           onChange={handleChange}
           onBlur={handleBlur}
-          value={values.province}
+          value={values.address_details.province}
         />
         <TextField
-          id={values.postalCode}
+          id={values.address_details.postal_code}
           label="Postal Code"
           variant="outlined"
           type="text"
           name={'postalCode'}
           onChange={handleChange}
           onBlur={handleBlur}
-          value={values.postalCode}
+          value={values.address_details.postal_code}
         />
+        <TextField
+          select
+          id={values.address_details.country}
+          label="Country"
+          defaultValue={values.address_details.country}
+        >
+          <MenuItem value={'Sri Lanka'}>Sri Lanka</MenuItem>
+        </TextField>
       </Box>
       <Typography variant="h5"> ID </Typography>
       <TextField
         select
-        id={values.primaryIdType}
+        id={values.user_identification.primary_id_type}
         label="Primary ID Type"
-        value={values.primaryIdType}
+        defaultValue={values.user_identification.primary_id_type}
       >
         <MenuItem value={'SriLankan'}>Sri Lankan</MenuItem>
       </TextField>
       <TextField
-        id={values.primaryIdNumber}
+        id={values.user_identification.primary_id_number}
         label="Primary ID Number"
         variant="outlined"
         type="text"
         name={'primaryIdNumber'}
         onChange={handleChange}
         onBlur={handleBlur}
-        value={values.primaryIdNumber}
+        value={values.user_identification.primary_id_number}
       />
       <TextField
         labelId="secondaryIdType"
         select
-        id={values.secondaryIdType}
+        id={values.user_identification.secondary_id_type}
         label="Secondary ID Type"
-        value={values.secondaryIdType}
+        defaultValue={values.user_identification.secondary_id_type}
       >
         <MenuItem value={'SriLankan'}>Sri Lankan</MenuItem>
       </TextField>
       <TextField
-        id={values.secondaryIdNumber}
+        id={values.user_identification.secondary_id_number}
         label="Secondary ID Number"
         variant="outlined"
         type="text"
         name={'secondaryIdNumber'}
         onChange={handleChange}
         onBlur={handleBlur}
-        value={values.secondaryIdNumber}
+        value={values.user_identification.secondary_id_number}
       />
       <Typography variant="h5"> Contact </Typography>
       <TextField
-        id={values.workPhone}
+        id={values.work_phone}
         label="Work Phone"
         variant="outlined"
         type="tel"
         name={'workPhone'}
         onChange={handleChange}
         onBlur={handleBlur}
-        value={values.workPhone}
+        value={values.work_phone}
       />
       <TextField
-        id={values.mobilePhone}
+        id={values.mobile_phone}
         label="Mobile Phone"
         variant="outlined"
         type="tel"
         name={'mobilePhone'}
         onChange={handleChange}
         onBlur={handleBlur}
-        value={values.mobilePhone}
+        value={values.mobile_phone}
       />
       <TextField
-        id={values.homePhone}
+        id={values.home_phone}
         label="Home Phone"
         variant="outlined"
         type="tel"
         name={'homePhone'}
         onChange={handleChange}
         onBlur={handleBlur}
-        value={values.homePhone}
+        value={values.home_phone}
       />
       <TextField
-        id={values.workEmail}
+        id={values.work_email}
         label="Work Email "
         variant="outlined"
         type="email"
         name={'workEmail'}
         onChange={handleChange}
         onBlur={handleBlur}
-        value={values.workEmail}
+        value={values.work_email}
       />
       <TextField
-        id={values.homeEmail}
+        id={values.home_email}
         label="Home Email"
         variant="outlined"
         type="text"
         name={'homeEmail'}
         onChange={handleChange}
         onBlur={handleBlur}
-        value={values.homeEmail}
+        value={values.home_email}
       />
       <Typography variant="h5"> Social Links </Typography>
       <TextField
