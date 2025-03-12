@@ -2,7 +2,14 @@ import React from 'react'
 import { Button } from '@mui/material'
 
 const MyInfoTabs = ({ setActiveTab, activeTab }) => {
-  const Tabs = ['Personal', 'Job', 'Time off', 'Documents', 'Benefits']
+  const Tabs = [
+    'Personal',
+    'Job',
+    'Time off',
+    'Emergency',
+    'Documents',
+    'Benefits'
+  ]
 
   return (
     <>

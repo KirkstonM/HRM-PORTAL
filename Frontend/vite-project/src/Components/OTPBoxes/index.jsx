@@ -13,6 +13,40 @@ const OTPBoxes = () => {
   const [response, { data, isError, isSuccess, error }] =
     useBaseMutationMutation()
 
+  /*
+    console.log('response', data)
+  * {
+    "requestId": "GtUDgc8KEy8AH2G09eihL",
+    "status": "fulfilled",
+    "endpointName": "baseMutation",
+    "startedTimeStamp": 1741544837226,
+    "data": {
+        "success": true,
+        "msg": "User successfully signed in",
+        "_id": "67cddd6de2f7556a522fdc4e",
+        "email": "qa_automation@test.co",
+        "isVerified": true,
+        "lastLogin": "2025-03-09T18:26:53.237Z",
+        "createdAt": "2025-03-09T18:26:53.238Z",
+        "updatedAt": "2025-03-09T18:27:17.305Z",
+        "__v": 0
+    },
+    "fulfilledTimeStamp": 1741544837377,
+    "isUninitialized": false,
+    "isLoading": false,
+    "isSuccess": true,
+    "isError": false,
+    "originalArgs": {
+        "endpoint": "/otp-verification",
+        "method": "POST",
+        "body": {
+            "otp": "470069"
+        }
+    }
+}
+  *
+  *
+  * */
   const submitOTP = async () => {
     await response({
       endpoint: API_ENDPOINTS.OTP_VERIFICATION,

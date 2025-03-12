@@ -1,10 +1,9 @@
-import React, { Suspense, useEffect } from 'react'
-import { ThemeProvider, CssBaseline, Box } from '@mui/material'
+import React, { Suspense } from 'react'
+import { ThemeProvider, CssBaseline } from '@mui/material'
 import { useSelector } from 'react-redux'
 import { createTheme } from '@mui/material/styles'
 import { Route, Routes } from 'react-router-dom'
 import { AUTH_BASE_ROUTES, ONBOARDING_ROUTES } from '@App/Routing.js'
-import { useBaseQueryQuery } from './Redux/RTKQuery/HttpRequest.js'
 import AuthWrapper from '@Components/AuthWrapper'
 
 function App() {
@@ -14,22 +13,6 @@ function App() {
       mode: defaultTheme
     }
   })
-  // const {
-  //   data: ResponseData,
-  //   error,
-  //   isLoading
-  // } = useBaseQueryQuery({
-  //   endpoint: 'locale'
-  // })
-
-  // const data = ResponseData?.data[0]?.values
-
-  // useEffect(() => {
-  //   dispatch(loadEmployeeData(mockEmployeeData))
-  //   if (data) {
-  //     dispatch(loadLocale(data))
-  //   }
-  // }, [data, dispatch])
   return (
     <>
       <ThemeProvider theme={darkTheme}>
