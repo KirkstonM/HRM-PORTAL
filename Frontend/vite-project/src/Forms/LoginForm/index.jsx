@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { useFormik } from 'formik'
 import { Box, Button, TextField } from '@mui/material'
 import { useBaseMutationMutation } from '@Redux/RTKQuery/HttpRequest.js'
-import { API_ENDPOINTS } from '@Constants/Apis/index.js'
+import { API_ENDPOINTS } from '@Constants/Apis'
 import Swal from 'sweetalert2'
 import { useNavigate } from 'react-router-dom'
 import { AUTH_ROUTES } from '@Constants/Routes'
@@ -62,34 +62,47 @@ const LoginForm = () => {
       }
     })
   return (
-    <>
-      <h1>LOGIN FORM </h1>
-      <Box component="form" autoComplete="off" onSubmit={handleSubmit}>
-        <TextField
-          id="email"
-          label="Outlined"
-          variant="outlined"
-          type="email"
-          name={'email'}
-          onChange={handleChange}
-          onBlur={handleBlur}
-          value={values.email}
-        />
-        <TextField
-          id="password"
-          label="Outlined"
-          variant="outlined"
-          type="password"
-          name={'password'}
-          onChange={handleChange}
-          onBlur={handleBlur}
-          value={values.password}
-        />
-        <Button variant={'outlined'} type={'submit'}>
-          LOGIN
-        </Button>
-      </Box>
-    </>
+    <Box component="form" autoComplete="off" onSubmit={handleSubmit}>
+      <TextField
+        id="email"
+        label="Email"
+        variant="standard"
+        type="email"
+        name={'email'}
+        onChange={handleChange}
+        onBlur={handleBlur}
+        value={values.email}
+        size="small"
+        fullWidth
+        margin="dense"
+        required
+      />
+      <TextField
+        id="password"
+        label="Password"
+        variant="standard"
+        type="password"
+        name={'password'}
+        onChange={handleChange}
+        onBlur={handleBlur}
+        value={values.password}
+        size="small"
+        fullWidth
+        margin="dense"
+        required
+      />
+      <Button
+        variant="contained"
+        type="submit"
+        size="medium"
+        fullWidth
+        color="success"
+        sx={{ mt: 4 }}
+        //loading ---for requests
+      >
+        LOGIN
+      </Button>
+    </Box>
   )
 }
 

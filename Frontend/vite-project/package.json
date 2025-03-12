@@ -27,6 +27,7 @@
     "react-redux": "^9.2.0",
     "react-router-dom": "^7.1.5",
     "sweetalert2": "^11.17.2",
+    "vite-plugin-svgr": "^4.3.0",
     "yup": "^1.6.1"
   },
   "devDependencies": {

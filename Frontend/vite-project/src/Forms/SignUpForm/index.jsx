@@ -36,30 +36,44 @@ const SignUpForm = () => {
     })
   return (
     <>
-      <h1>SIGN UP FORM </h1>
       {!isSuccess && (
         <Box component="form" autoComplete="off" onSubmit={handleSubmit}>
           <TextField
             id="email"
             label="Outlined"
-            variant="outlined"
+            variant="standard"
             type="email"
             name={'email'}
             onChange={handleChange}
             onBlur={handleBlur}
             value={values.email}
+            size="small"
+            fullWidth
+            margin="dense"
+            required
           />
           <TextField
             id="password"
             label="Outlined"
-            variant="outlined"
+            variant="standard"
             type="password"
             name={'password'}
             onChange={handleChange}
             onBlur={handleBlur}
             value={values.password}
+            size="small"
+            fullWidth
+            margin="dense"
+            required
           />
-          <Button variant={'outlined'} type={'submit'}>
+          <Button
+            variant="contained"
+            type="submit"
+            size="medium"
+            fullWidth
+            color="success"
+            sx={{ mt: 4 }}
+          >
             SIGNUP
           </Button>
         </Box>
