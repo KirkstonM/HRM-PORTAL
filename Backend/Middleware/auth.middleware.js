@@ -10,7 +10,7 @@ const checkAuthentication = async (req, res, next) => {
     if (!decodeCookie) {
       return res.status(401).json({ msg: 'Expired token' })
     }
-    req.empId = decodeCookie.empId
+    req.userId = decodeCookie.userId
     next()
   } catch (error) {
     return res.status(401).json({ msg: 'Unauthorized' })

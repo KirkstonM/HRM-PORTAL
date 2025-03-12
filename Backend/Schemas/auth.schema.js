@@ -3,7 +3,6 @@ import { OTPExpiration } from '../Utils/otpGenerator.js'
 
 const authSchema = mongoose.Schema(
   {
-    employee_id: { type: Number, required: true, unique: true },
     email: {
       type: String,
       required: true,

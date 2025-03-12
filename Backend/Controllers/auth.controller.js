@@ -14,8 +14,8 @@ const userSignup = async (req, res) => {
       return res.status(400).json({ msg: 'User already exists' })
     }
     //dynamically increase the EMPLOYEEID
-    const lastUser = await AuthModel.findOne().sort({ employee_id: -1 })
-    const newEmployeeId = lastUser ? lastUser.employee_id + 1 : 1
+    // const lastUser = await AuthModel.findOne().sort({ employee_id: -1 })
+    // const newEmployeeId = lastUser ? lastUser.employee_id + 1 : 1
 
     //Create a user, hash their password and assign an otp to them
     const salt = await bcrypt.genSaltSync(10)
@@ -23,14 +23,13 @@ const userSignup = async (req, res) => {
     const verificationOTP = generateOTP()
 
     const user = await new AuthModel({
-      employee_id: newEmployeeId,
       email,
       password: hashPassword,
       verificationOTP,
       OTPExpiration
     })
     await user.save()
-    generateTokenAndCookies(res, newEmployeeId)
+    generateTokenAndCookies(res, user._id)
     return res
       .status(201)
       .json({ success: true, msg: 'User successfully signed in' }) //@@TODO::::decide if you wanna send user details back
@@ -86,7 +85,7 @@ const login = async (req, res) => {
     if (!isPasswordValid) {
       return res.status(400).json({ success: false, msg: 'Incorrect password' })
     }
-    generateTokenAndCookies(res, user.employee_id)
+    generateTokenAndCookies(res, user._id)
 
     user.lastLogin = new Date()
     await user.save()
@@ -156,7 +155,7 @@ const userAuthentication = async (req, res) => {
     }
     return res.status(200).json({
       success: true,
-      user: {
+      data: {
         ...user._doc,
         password: undefined
       }
