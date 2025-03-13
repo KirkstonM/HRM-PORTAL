@@ -19,8 +19,15 @@ const OnboardingCard = ({ logoIcon, logoSize, title, children }) => {
         p: 3
       }}
     >
-      <Box>
-        <Logo Icon={logoIcon} size={logoSize} />
+      <Box sx={{ width: '250px', height: '150px' }}>
+        <Logo
+          Icon={logoIcon}
+          size={logoSize}
+          style={{
+            width: '100%',
+            height: '100%'
+          }}
+        />
       </Box>
       <Typography variant="h4">{title}</Typography>
       <Box sx={{ width: '100%' }}>{children}</Box>

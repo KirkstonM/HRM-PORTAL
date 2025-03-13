@@ -3,8 +3,13 @@ import { AUTH_ROUTES, LOGIN_ROUTES } from '@Constants/Routes'
 
 const LoginPage = lazy(() => import('@Pages/UserOnboarding/Login'))
 const SignupPage = lazy(() => import('@Pages/UserOnboarding/Signup'))
-const ResetPassword = lazy(() => import('@Pages/UserOnboarding/ResetPassword'))
-const ForgotPassword = lazy(
+const OtpVerificationPage = lazy(
+  () => import('@Pages/UserOnboarding/OTPVerify')
+)
+const ResetPasswordPage = lazy(
+  () => import('@Pages/UserOnboarding/ResetPassword')
+)
+const ForgotPasswordPage = lazy(
   () => import('@Pages/UserOnboarding/ForgotPassword')
 )
 
@@ -23,12 +28,16 @@ const ONBOARDING_ROUTES = [
     Component: SignupPage
   },
   {
+    Path: LOGIN_ROUTES.OTP_VERIFICATION,
+    Component: OtpVerificationPage
+  },
+  {
     Path: LOGIN_ROUTES.FORGOT_PASSWORD,
-    Component: ForgotPassword
+    Component: ForgotPasswordPage
   },
   {
     Path: LOGIN_ROUTES.RESET_PASSWORD,
-    Component: ResetPassword
+    Component: ResetPasswordPage
   }
 ]
 

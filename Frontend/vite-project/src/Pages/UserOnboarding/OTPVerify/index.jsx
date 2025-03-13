@@ -1,10 +1,10 @@
 import React from 'react'
-import SignUpForm from '@Forms/SignUpForm'
-import { Box } from '@mui/material'
+import EnterOtpIcon from '../icons/EnterOtpIcon.svg?react'
 import OnboardingCard from '@Components/OnboardingCard'
-import SignUpIcon from '../icons/SignUpIcon.svg?react'
+import { Box } from '@mui/material'
+import OTPBoxes from '@Components/OTPBoxes'
 
-const SignupPage = () => {
+const OTPVerify = () => {
   return (
     <Box
       sx={{
@@ -14,11 +14,11 @@ const SignupPage = () => {
         justifyContent: 'center'
       }}
     >
-      <OnboardingCard logoIcon={SignUpIcon} title="Hop Onboard!!">
-        <SignUpForm />
+      <OnboardingCard logoIcon={EnterOtpIcon} title="Enter your OTP">
+        <OTPBoxes />
       </OnboardingCard>
     </Box>
   )
 }
 
-export default SignupPage
+export default OTPVerify

@@ -5,10 +5,11 @@ import { API_ENDPOINTS } from '@Constants/Apis'
 import { useDispatch } from 'react-redux'
 import { loadLocale } from '@Redux/Slices/AppSlice.js'
 import { Box } from '@mui/material'
-import LoginIcon from '../icons/LoginIcon.svg?react'
+import SignInIcon from '../icons/SignInIcon.svg?react'
 import { Link } from 'react-router-dom'
 import { LOGIN_ROUTES } from '@Constants/Routes/index.js'
 import OnboardingCard from '@Components/OnboardingCard'
+import OTPBoxes from '@Components/OTPBoxes'
 
 const LoginPage = () => {
   const dispatch = useDispatch()
@@ -37,7 +38,7 @@ const LoginPage = () => {
         justifyContent: 'center'
       }}
     >
-      <OnboardingCard logoIcon={LoginIcon} logoSize="lg" title="Welcome Back">
+      <OnboardingCard logoIcon={SignInIcon} title="Welcome Back">
         <LoginForm />
       </OnboardingCard>
     </Box>

@@ -13,10 +13,6 @@ const userSignup = async (req, res) => {
     if (isUserExists) {
       return res.status(400).json({ msg: 'User already exists' })
     }
-    //dynamically increase the EMPLOYEEID
-    // const lastUser = await AuthModel.findOne().sort({ employee_id: -1 })
-    // const newEmployeeId = lastUser ? lastUser.employee_id + 1 : 1
-
     //Create a user, hash their password and assign an otp to them
     const salt = await bcrypt.genSaltSync(10)
     const hashPassword = await bcrypt.hashSync(password, salt)
