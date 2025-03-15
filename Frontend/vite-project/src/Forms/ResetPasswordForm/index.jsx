@@ -1,18 +1,15 @@
 import React, { useEffect } from 'react'
 import { useFormik } from 'formik'
-import { Box, Button, TextField, Typography } from '@mui/material'
+import { passwordValidationSchema } from '@Validations'
+import { API_ENDPOINTS } from '@Constants/Apis/index.js'
+import { Box, Button, TextField } from '@mui/material'
+import { LOGIN_ROUTES } from '@Constants/Routes/index.js'
 import { useBaseMutationMutation } from '@Redux/RTKQuery/HttpRequest.js'
-import { API_ENDPOINTS } from '@Constants/Apis'
 import Swal from 'sweetalert2'
-import { Link, useNavigate } from 'react-router-dom'
-import { AUTH_ROUTES, LOGIN_ROUTES } from '@Constants/Routes'
-import { useDispatch } from 'react-redux'
-import { toggleToken } from '@Redux/Slices/AppSlice.js'
-import { loginFormValidation } from '@Validations'
+import { useNavigate } from 'react-router-dom'
 
-const LoginForm = () => {
+const ResetPasswordForm = () => {
   const navigate = useNavigate()
-  const dispatch = useDispatch()
   const [payload, { error, data, isSuccess, isError, isLoading }] =
     useBaseMutationMutation()
 
@@ -24,9 +21,8 @@ const LoginForm = () => {
         icon: 'success',
         timer: 2000
       })
-      dispatch(toggleToken())
       const timer = setTimeout(() => {
-        navigate(AUTH_ROUTES.HOME)
+        navigate(LOGIN_ROUTES.LOGIN)
       }, 2000)
 
       return () => clearTimeout(timer)
@@ -38,9 +34,7 @@ const LoginForm = () => {
       Swal.fire({
         title: `${error?.msg}`,
         icon: 'error',
-        showConfirmButton: true,
-        background: 'inherit',
-        color: 'inherit'
+        showConfirmButton: false
       })
     }
   }, [isError, error])
@@ -48,35 +42,23 @@ const LoginForm = () => {
   const { values, errors, handleSubmit, handleChange, touched, handleBlur } =
     useFormik({
       initialValues: {
-        email: '',
-        password: ''
+        password: '',
+        confirmPassword: ''
       },
-      validationSchema: loginFormValidation,
+      validationSchema: passwordValidationSchema,
       onSubmit: async (values) => {
         await payload({
-          endpoint: API_ENDPOINTS.LOGIN,
+          endpoint: API_ENDPOINTS.RESET_PASSWORD,
           method: 'POST',
-          body: values
+          body: {
+            password: values.password
+          }
         })
       }
     })
+
   return (
     <Box component="form" autoComplete="off" onSubmit={handleSubmit}>
-      <TextField
-        id="email"
-        label="Email"
-        variant="outlined"
-        type="email"
-        name={'email'}
-        onChange={handleChange}
-        onBlur={handleBlur}
-        value={values.email}
-        size="small"
-        fullWidth
-        margin="dense"
-        error={touched.email && errors.email}
-        helperText={errors.email}
-      />
       <TextField
         id="password"
         label="Password"
@@ -92,14 +74,21 @@ const LoginForm = () => {
         helperText={errors.password}
         sx={{ mt: 3 }}
       />
-      <Box sx={{ textAlign: 'end', mt: 2 }}>
-        <Link
-          to={LOGIN_ROUTES.FORGOT_PASSWORD}
-          style={{ fontSize: 12, color: 'gray' }}
-        >
-          Forgot Password?
-        </Link>
-      </Box>
+      <TextField
+        id="confirmPassword"
+        label="Re-enter Password"
+        variant="outlined"
+        type="password"
+        name={'confirmPassword'}
+        onChange={handleChange}
+        onBlur={handleBlur}
+        value={values.confirmPassword}
+        size="small"
+        fullWidth
+        error={touched.confirmPassword && errors.confirmPassword}
+        helperText={errors.confirmPassword}
+        sx={{ mt: 3 }}
+      />
       <Button
         variant="contained"
         type="submit"
@@ -109,10 +98,10 @@ const LoginForm = () => {
         sx={{ mt: 2 }}
         loading={isLoading}
       >
-        Sign In
+        Reset Password
       </Button>
     </Box>
   )
 }
 
-export default LoginForm
+export default ResetPasswordForm

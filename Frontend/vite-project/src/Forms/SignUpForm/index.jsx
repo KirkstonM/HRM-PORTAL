@@ -6,10 +6,15 @@ import { API_ENDPOINTS } from '@Constants/Apis'
 import Swal from 'sweetalert2'
 import { useNavigate } from 'react-router-dom'
 import { LOGIN_ROUTES } from '@Constants/Routes'
+import { useDispatch } from 'react-redux'
+import { setNewUserEmail } from '@Redux/Slices/AppSlice.js'
+import { loginFormValidation } from '@Validations'
 
 const SignUpForm = () => {
   const navigate = useNavigate()
-  const [payload, { error, data, isSuccess, isError }] =
+  const dispatch = useDispatch()
+
+  const [payload, { error, data, isSuccess, isError, isLoading }] =
     useBaseMutationMutation()
 
   useEffect(() => {
@@ -23,6 +28,7 @@ const SignUpForm = () => {
 
   useEffect(() => {
     if (isSuccess) {
+      dispatch(setNewUserEmail(data?.email))
       navigate(LOGIN_ROUTES.OTP_VERIFICATION)
     }
   }, [isSuccess])
@@ -33,7 +39,7 @@ const SignUpForm = () => {
         email: '',
         password: ''
       },
-      validateOnChange: {},
+      validationSchema: loginFormValidation,
       onSubmit: async (values) => {
         await payload({
           endpoint: API_ENDPOINTS.SIGNUP,
@@ -46,8 +52,8 @@ const SignUpForm = () => {
     <Box component="form" autoComplete="off" onSubmit={handleSubmit}>
       <TextField
         id="email"
-        label="Outlined"
-        variant="standard"
+        label="Email"
+        variant="outlined"
         type="email"
         name={'email'}
         onChange={handleChange}
@@ -56,12 +62,13 @@ const SignUpForm = () => {
         size="small"
         fullWidth
         margin="dense"
-        required
+        error={touched.email && errors.email}
+        helperText={errors.email}
       />
       <TextField
         id="password"
-        label="Outlined"
-        variant="standard"
+        label="Password"
+        variant="outlined"
         type="password"
         name={'password'}
         onChange={handleChange}
@@ -69,8 +76,9 @@ const SignUpForm = () => {
         value={values.password}
         size="small"
         fullWidth
-        margin="dense"
-        required
+        error={touched.password && errors.password}
+        helperText={errors.password}
+        sx={{ mt: 3 }}
       />
       <Button
         variant="contained"
@@ -78,7 +86,8 @@ const SignUpForm = () => {
         size="medium"
         fullWidth
         color="success"
-        sx={{ mt: 4 }}
+        sx={{ mt: 3 }}
+        loading={isLoading}
       >
         SIGNUP
       </Button>

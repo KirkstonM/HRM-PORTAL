@@ -1,15 +1,16 @@
-import React, { useState } from 'react'
+import React from 'react'
 import ForgotPasswordForm from '@Forms/ForgotPasswordForm'
 import { Box, Typography } from '@mui/material'
 import OnboardingCard from '@Components/OnboardingCard'
 import ForgotPasswordIcon from '../icons/ForgotPasswordIcon.svg?react'
+import CheckEmailIcon from '../icons/CheckEmailIcon.svg?react'
+import { useSelector } from 'react-redux'
 
 const ForgotPasswordPage = () => {
-  const [isEmailSent, setIsEmailSent] = useState(false)
-
-  const toggle = () => {
-    setIsEmailSent(true)
-  }
+  const userEmail = useSelector((state) => state.app.user.resetPasswordEmail)
+  const isResetLinkSent = useSelector(
+    (state) => state.app.user.resetLinkSubmitted
+  )
   return (
     <Box
       sx={{
@@ -19,23 +20,23 @@ const ForgotPasswordPage = () => {
         justifyContent: 'center'
       }}
     >
-      {!isEmailSent ? (
+      {!isResetLinkSent ? (
         <OnboardingCard
           logoIcon={ForgotPasswordIcon}
           logoSize="lg"
-          title="Dumbass!"
+          title="Forgot your password ?"
+          subtitle="Enter your email so that we can send you a password reset link"
         >
-          <ForgotPasswordForm toggle={toggle} />
+          <ForgotPasswordForm />
         </OnboardingCard>
       ) : (
         <OnboardingCard
-          logoIcon={ForgotPasswordIcon}
+          logoIcon={CheckEmailIcon}
           logoSize="lg"
-          title="Dumbass!"
+          title="Check your email!"
+          subtitle={`An email was sent to ${userEmail} that will ask you to click on a link to reset you password`}
         >
-          <Typography variant="body2" color="textSecondary">
-            Check your email you stupid cunt
-          </Typography>
+          <Typography variant="body2" color="textSecondary"></Typography>
         </OnboardingCard>
       )}
     </Box>

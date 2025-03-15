@@ -1,22 +1,27 @@
 import React from 'react'
 import { Box, Paper, Typography } from '@mui/material'
 import Logo from '@Components/Logo'
-import { Link } from 'react-router-dom'
-import { LOGIN_ROUTES } from '@Constants/Routes/index.js'
 
-const OnboardingCard = ({ logoIcon, logoSize, title, children }) => {
+const OnboardingCard = ({
+  logoIcon,
+  logoSize,
+  title,
+  subtitle,
+  children,
+  renderProps
+}) => {
   return (
     <Paper
-      elevation={3}
-      square={false}
+      elevation={1}
       sx={{
-        width: '30%',
+        width: { lg: '30%', sm: '50%' },
         height: 'auto',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
         rowGap: 5,
-        p: 3
+        p: 3,
+        borderRadius: 5
       }}
     >
       <Box sx={{ width: '250px', height: '150px' }}>
@@ -29,11 +34,14 @@ const OnboardingCard = ({ logoIcon, logoSize, title, children }) => {
           }}
         />
       </Box>
-      <Typography variant="h4">{title}</Typography>
-      <Box sx={{ width: '100%' }}>{children}</Box>
-      <Box>
-        <Typography>New Here ?</Typography>
+      <Box sx={{ textAlign: 'center' }}>
+        <Typography variant="h5">{title}</Typography>
+        <Typography variant="subtitle2" sx={{ color: 'gray', mt: 1 }}>
+          {subtitle}
+        </Typography>
       </Box>
+      <Box sx={{ width: '100%' }}>{children}</Box>
+      {renderProps && renderProps()}
     </Paper>
   )
 }

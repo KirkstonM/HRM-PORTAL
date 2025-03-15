@@ -3,7 +3,12 @@ import { createSlice } from '@reduxjs/toolkit'
 const initialState = {
   locale: {},
   theme: 'dark',
-  token: true
+  token: true,
+  user: {
+    email: '',
+    resetPasswordEmail: '',
+    resetLinkSubmitted: null
+  }
 }
 
 const AppSlice = createSlice({
@@ -18,9 +23,25 @@ const AppSlice = createSlice({
     },
     toggleToken: (state) => {
       state.token = true
+    },
+    setNewUserEmail: (state, action) => {
+      state.user.email = action.payload
+    },
+    setResetPasswordEmail: (state, action) => {
+      state.user.resetPasswordEmail = action.payload
+    },
+    toggleResetPasswordSubmitted: (state, action) => {
+      state.user.resetLinkSubmitted = action.payload
     }
   }
 })
 
-export const { toggleTheme, loadLocale, toggleToken } = AppSlice.actions
+export const {
+  toggleTheme,
+  loadLocale,
+  toggleToken,
+  setNewUserEmail,
+  setResetPasswordEmail,
+  toggleResetPasswordSubmitted
+} = AppSlice.actions
 export default AppSlice.reducer

@@ -5,7 +5,7 @@ import { API_ENDPOINTS } from '@Constants/Apis'
 import Swal from 'sweetalert2'
 import { useNavigate } from 'react-router-dom'
 import { LOGIN_ROUTES } from '@Constants/Routes'
-import { Button } from '@mui/material'
+import { Box, Button } from '@mui/material'
 
 const OTPBoxes = () => {
   const navigate = useNavigate()
@@ -76,7 +76,7 @@ const OTPBoxes = () => {
     }
   }
   return (
-    <>
+    <Box sx={{ border: '1px solid red', textAlign: 'center' }}>
       {otp?.map((item, index) => (
         <input
           style={{
@@ -86,7 +86,10 @@ const OTPBoxes = () => {
             textAlign: 'center',
             fontSize: '18px',
             border: '1px solid #ccc',
-            borderRadius: '4px'
+            borderRadius: '4px',
+            '&:focus': {
+              background: 'red'
+            }
           }}
           type="text"
           maxLength={1}
@@ -108,7 +111,7 @@ const OTPBoxes = () => {
       >
         Submit OTP
       </Button>
-    </>
+    </Box>
   )
 }
 

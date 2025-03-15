@@ -1,34 +1,12 @@
-import React, { useEffect } from 'react'
-import LoginForm from '@Forms/LoginForm'
-import { useBaseQueryQuery } from '@Redux/RTKQuery/HttpRequest.js'
-import { API_ENDPOINTS } from '@Constants/Apis'
-import { useDispatch } from 'react-redux'
-import { loadLocale } from '@Redux/Slices/AppSlice.js'
-import { Box } from '@mui/material'
-import SignInIcon from '../icons/SignInIcon.svg?react'
+import React from 'react'
+import { Box, Typography } from '@mui/material'
 import { Link } from 'react-router-dom'
-import { LOGIN_ROUTES } from '@Constants/Routes/index.js'
+import LoginForm from '@Forms/LoginForm'
 import OnboardingCard from '@Components/OnboardingCard'
-import OTPBoxes from '@Components/OTPBoxes'
+import { LOGIN_ROUTES } from '@Constants/Routes/index.js'
+import SignInIcon from '../icons/SignInIcon.svg?react'
 
 const LoginPage = () => {
-  const dispatch = useDispatch()
-  const {
-    data: localeData,
-    isSuccess,
-    isError
-  } = useBaseQueryQuery({
-    endpoint: API_ENDPOINTS.LOCALE
-  })
-
-  const localizationData = localeData?.[0]?.values
-  useEffect(() => {
-    if (isSuccess) {
-      dispatch(loadLocale(localizationData))
-    }
-  }, [localeData])
-
-  //@@TODO: HANDLE THE ERROR AND REFECTCH
   return (
     <Box
       sx={{
@@ -38,7 +16,30 @@ const LoginPage = () => {
         justifyContent: 'center'
       }}
     >
-      <OnboardingCard logoIcon={SignInIcon} title="Welcome Back">
+      <OnboardingCard
+        logoIcon={SignInIcon}
+        title="Welcome Back"
+        subtitle="Please enter your details to sign in"
+        renderProps={() => {
+          return (
+            <Box>
+              <Typography variant="caption" color="textSecondary">
+                New User ?{' '}
+                <Link
+                  to={LOGIN_ROUTES.SIGNUP}
+                  style={{
+                    color: 'orange',
+                    fontWeight: 'bold',
+                    fontFamily: 'sans-serif'
+                  }}
+                >
+                  Sign Up
+                </Link>
+              </Typography>
+            </Box>
+          )
+        }}
+      >
         <LoginForm />
       </OnboardingCard>
     </Box>

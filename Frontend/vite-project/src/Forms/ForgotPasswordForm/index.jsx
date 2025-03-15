@@ -1,20 +1,47 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useFormik } from 'formik'
 import { Box, Button, TextField, Typography } from '@mui/material'
 import { useBaseMutationMutation } from '@Redux/RTKQuery/HttpRequest.js'
 import { API_ENDPOINTS } from '@Constants/Apis'
-import OnboardingCard from '@Components/OnboardingCard'
-import ForgotPasswordIcon from '@Pages/UserOnboarding/icons/ForgotPasswordIcon.svg?react'
+import { loginFormValidation } from '@Validations/index.jsx'
+import Swal from 'sweetalert2'
+import {
+  setResetPasswordEmail,
+  toggleResetPasswordSubmitted
+} from '@Redux/Slices/AppSlice.js'
+import { useDispatch } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 
-const ForgotPasswordForm = ({ toggle }) => {
-  const [payload, { data, isSuccess, isError }] = useBaseMutationMutation()
+const ForgotPasswordForm = () => {
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+  const [payload, { error, data, isSuccess, isError, isLoading }] =
+    useBaseMutationMutation()
+
+  console.log(data)
+  useEffect(() => {
+    if (isError) {
+      Swal.fire({
+        title: `${error?.msg}`,
+        icon: 'error'
+      })
+    }
+  }, [error, isError])
+
+  useEffect(() => {
+    if (isSuccess) {
+      dispatch(setResetPasswordEmail(data?.email))
+      dispatch(toggleResetPasswordSubmitted(true))
+      navigate(`/reset-password?token=${data?.resetToken}`)
+    }
+  }, [isSuccess])
 
   const { values, errors, handleSubmit, handleChange, touched, handleBlur } =
     useFormik({
       initialValues: {
         email: ''
       },
-      validateOnChange: {},
+      validationSchema: loginFormValidation.pick(['email']),
       onSubmit: async (values) => {
         await payload({
           endpoint: API_ENDPOINTS.FORGOT_PASSWORD,
@@ -28,7 +55,7 @@ const ForgotPasswordForm = ({ toggle }) => {
       <TextField
         id="email"
         label="Email"
-        variant="standard"
+        variant="outlined"
         type="email"
         name={'email'}
         onChange={handleChange}
@@ -37,7 +64,8 @@ const ForgotPasswordForm = ({ toggle }) => {
         size="small"
         fullWidth
         margin="dense"
-        required
+        error={touched.email && errors.email}
+        helperText={errors.email}
       />
       <Button
         variant="contained"
@@ -45,8 +73,8 @@ const ForgotPasswordForm = ({ toggle }) => {
         size="medium"
         fullWidth
         color="success"
-        sx={{ mt: 4 }}
-        //loading ---for requests
+        sx={{ mt: 3 }}
+        loading={isLoading}
       >
         RESET PASSWORD
       </Button>
