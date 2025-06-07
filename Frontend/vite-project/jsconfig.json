@@ -10,7 +10,8 @@
       "@Pages/*": ["src/Pages/*"],
       "@Redux/*": ["src/Redux/*"],
       "@Validations/*": ["src/Validations/*"],
-      "@Assets/*": ["src/assets/*"]
+      "@Assets/*": ["src/assets/*"],
+      "@Utils/*": ["src/Utils/*"]
     },
     "moduleResolution": "node",
     "jsx": "react",

@@ -5,24 +5,18 @@ import OnboardingCard from '@Components/OnboardingCard'
 import SignUpIcon from '../icons/SignUpIcon.svg?react'
 import { Link } from 'react-router-dom'
 import { LOGIN_ROUTES } from '@Constants/Routes/index.js'
+import OnboardingLayout from '@Components/Layout/OnboardingLayout/index.jsx'
 
 const SignupPage = () => {
   return (
-    <Box
-      sx={{
-        height: '100vh',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center'
-      }}
-    >
+    <OnboardingLayout>
       <OnboardingCard
         logoIcon={SignUpIcon}
         title="Hop Onboard!"
         renderProps={() => {
           return (
-            <Box>
-              <Typography variant="body2" color="textSecondary">
+            <Box mt={2}>
+              <Typography variant="caption" color="text.secondary">
                 Got an Account Already ?{' '}
                 <Link
                   to={LOGIN_ROUTES.LOGIN}
@@ -41,7 +35,7 @@ const SignupPage = () => {
       >
         <SignUpForm />
       </OnboardingCard>
-    </Box>
+    </OnboardingLayout>
   )
 }
 

@@ -1,8 +1,9 @@
-const AUTH_ROUTES = {
+const USER_ROUTES = {
   HOME: '/home',
-  MY_INFO: '/employee/:id',
+  MY_INFO: '/employee',
   PEOPLE: '/people',
   FILES: '/files',
+  CALENDER: '/calender',
   ADMIN: '/admin'
 }
 
@@ -14,4 +15,14 @@ const LOGIN_ROUTES = {
   RESET_PASSWORD: '/reset-password'
 }
 
-export { AUTH_ROUTES, LOGIN_ROUTES }
+const ADMIN_ROUTES = {
+  DASHBOARD: '/admin/dashboard',
+  EMPLOYEES: '/admin/employees',
+  ATTENDANCES: '/admin/attendances',
+  CALENDER: '/admin/calendar',
+  LEAVES: '/admin/leaves',
+  PAYROLL: '/admin/payroll',
+  MY_INFO: '/admin/info'
+}
+
+export { USER_ROUTES, LOGIN_ROUTES, ADMIN_ROUTES }

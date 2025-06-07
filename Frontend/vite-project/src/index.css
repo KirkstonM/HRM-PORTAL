@@ -1,3 +1,6 @@
+@import "tailwindcss";
+@import '@fontsource/inter';
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -8,4 +11,5 @@
 body {
   height: 100vh;
   width: 100%;
+  font-family: 'Inter', sans-serif;
 }

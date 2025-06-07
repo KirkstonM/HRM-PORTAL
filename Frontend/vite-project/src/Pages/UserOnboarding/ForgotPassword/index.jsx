@@ -1,25 +1,19 @@
 import React from 'react'
 import ForgotPasswordForm from '@Forms/ForgotPasswordForm'
-import { Box, Typography } from '@mui/material'
+import { Typography } from '@mui/material'
 import OnboardingCard from '@Components/OnboardingCard'
 import ForgotPasswordIcon from '../icons/ForgotPasswordIcon.svg?react'
 import CheckEmailIcon from '../icons/CheckEmailIcon.svg?react'
 import { useSelector } from 'react-redux'
+import OnboardingLayout from '@Components/Layout/OnboardingLayout'
 
 const ForgotPasswordPage = () => {
-  const userEmail = useSelector((state) => state.app.user.resetPasswordEmail)
+  const userEmail = useSelector((state) => state.app?.user?.resetPasswordEmail)
   const isResetLinkSent = useSelector(
-    (state) => state.app.user.resetLinkSubmitted
+    (state) => state.app?.user?.resetLinkSubmitted
   )
   return (
-    <Box
-      sx={{
-        height: '100vh',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center'
-      }}
-    >
+    <OnboardingLayout>
       {!isResetLinkSent ? (
         <OnboardingCard
           logoIcon={ForgotPasswordIcon}
@@ -39,7 +33,7 @@ const ForgotPasswordPage = () => {
           <Typography variant="body2" color="textSecondary"></Typography>
         </OnboardingCard>
       )}
-    </Box>
+    </OnboardingLayout>
   )
 }
 

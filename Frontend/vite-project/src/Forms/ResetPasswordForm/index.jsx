@@ -1,43 +1,15 @@
 import React, { useEffect } from 'react'
-import { useFormik } from 'formik'
-import { passwordValidationSchema } from '@Validations'
-import { API_ENDPOINTS } from '@Constants/Apis/index.js'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import { Box, Button, TextField } from '@mui/material'
-import { LOGIN_ROUTES } from '@Constants/Routes/index.js'
-import { useBaseMutationMutation } from '@Redux/RTKQuery/HttpRequest.js'
+import { useFormik } from 'formik'
 import Swal from 'sweetalert2'
-import { useNavigate } from 'react-router-dom'
+import { useBaseMutationMutation } from '@Redux/RTKQuery/HttpRequest.js'
+import { ONBOARDING_ENDPOINTS } from '@Constants/Apis/index.js'
+import { LOGIN_ROUTES } from '@Constants/Routes/index.js'
+import { passwordValidationSchema } from '@Validations'
 
 const ResetPasswordForm = () => {
-  const navigate = useNavigate()
-  const [payload, { error, data, isSuccess, isError, isLoading }] =
-    useBaseMutationMutation()
-
-  useEffect(() => {
-    if (isSuccess) {
-      Swal.fire({
-        title: `${data?.msg}`,
-        showConfirmButton: false,
-        icon: 'success',
-        timer: 2000
-      })
-      const timer = setTimeout(() => {
-        navigate(LOGIN_ROUTES.LOGIN)
-      }, 2000)
-
-      return () => clearTimeout(timer)
-    }
-  }, [isSuccess])
-
-  useEffect(() => {
-    if (isError) {
-      Swal.fire({
-        title: `${error?.msg}`,
-        icon: 'error',
-        showConfirmButton: false
-      })
-    }
-  }, [isError, error])
+  const { payload, queryParam, isLoading } = useResetPasswordController()
 
   const { values, errors, handleSubmit, handleChange, touched, handleBlur } =
     useFormik({
@@ -48,7 +20,7 @@ const ResetPasswordForm = () => {
       validationSchema: passwordValidationSchema,
       onSubmit: async (values) => {
         await payload({
-          endpoint: API_ENDPOINTS.RESET_PASSWORD,
+          endpoint: `${ONBOARDING_ENDPOINTS.RESET_PASSWORD}${queryParam}`,
           method: 'POST',
           body: {
             password: values.password
@@ -102,6 +74,42 @@ const ResetPasswordForm = () => {
       </Button>
     </Box>
   )
+}
+
+const useResetPasswordController = () => {
+  const navigate = useNavigate()
+  const [searchParams] = useSearchParams()
+  const queryParam = searchParams?.get('token')?.toString()
+
+  const [payload, { error, data, isSuccess, isError, isLoading }] =
+    useBaseMutationMutation()
+
+  useEffect(() => {
+    if (isSuccess) {
+      Swal.fire({
+        title: `${data?.msg}`,
+        showConfirmButton: false,
+        icon: 'success',
+        timer: 2000
+      })
+      const timer = setTimeout(() => {
+        navigate(LOGIN_ROUTES.LOGIN)
+      }, 2000)
+
+      return () => clearTimeout(timer)
+    }
+  }, [isSuccess])
+
+  useEffect(() => {
+    if (isError) {
+      Swal.fire({
+        title: `${error?.msg}`,
+        icon: 'error',
+        showConfirmButton: false
+      })
+    }
+  }, [isError, error])
+  return { payload, queryParam, isLoading }
 }
 
 export default ResetPasswordForm

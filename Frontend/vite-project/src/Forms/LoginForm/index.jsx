@@ -1,49 +1,19 @@
 import React, { useEffect } from 'react'
-import { useFormik } from 'formik'
-import { Box, Button, TextField, Typography } from '@mui/material'
-import { useBaseMutationMutation } from '@Redux/RTKQuery/HttpRequest.js'
-import { API_ENDPOINTS } from '@Constants/Apis'
-import Swal from 'sweetalert2'
 import { Link, useNavigate } from 'react-router-dom'
-import { AUTH_ROUTES, LOGIN_ROUTES } from '@Constants/Routes'
 import { useDispatch } from 'react-redux'
-import { toggleToken } from '@Redux/Slices/AppSlice.js'
+import { useFormik } from 'formik'
+import { Box, Button, TextField } from '@mui/material'
+import Swal from 'sweetalert2'
+import { useBaseMutationMutation } from '@Redux/RTKQuery/HttpRequest.js'
+import { setUserData, toggleToken } from '@Redux/Slices/AppSlice.js'
+import { ONBOARDING_ENDPOINTS } from '@Constants/Apis'
+import { ADMIN_ROUTES, LOGIN_ROUTES, USER_ROUTES } from '@Constants/Routes'
+import { USER_ROLES } from '@Constants/ConstantValues'
 import { loginFormValidation } from '@Validations'
+import { addEmployeeDate } from '@Redux/Slices/EmployeeDetailsSlice.js'
 
 const LoginForm = () => {
-  const navigate = useNavigate()
-  const dispatch = useDispatch()
-  const [payload, { error, data, isSuccess, isError, isLoading }] =
-    useBaseMutationMutation()
-
-  useEffect(() => {
-    if (isSuccess) {
-      Swal.fire({
-        title: `${data?.msg}`,
-        showConfirmButton: false,
-        icon: 'success',
-        timer: 2000
-      })
-      dispatch(toggleToken())
-      const timer = setTimeout(() => {
-        navigate(AUTH_ROUTES.HOME)
-      }, 2000)
-
-      return () => clearTimeout(timer)
-    }
-  }, [isSuccess])
-
-  useEffect(() => {
-    if (isError) {
-      Swal.fire({
-        title: `${error?.msg}`,
-        icon: 'error',
-        showConfirmButton: true,
-        background: 'inherit',
-        color: 'inherit'
-      })
-    }
-  }, [isError, error])
+  const { payload, isLoading } = useLoginController()
 
   const { values, errors, handleSubmit, handleChange, touched, handleBlur } =
     useFormik({
@@ -54,7 +24,7 @@ const LoginForm = () => {
       validationSchema: loginFormValidation,
       onSubmit: async (values) => {
         await payload({
-          endpoint: API_ENDPOINTS.LOGIN,
+          endpoint: ONBOARDING_ENDPOINTS.LOGIN,
           method: 'POST',
           body: values
         })
@@ -115,4 +85,45 @@ const LoginForm = () => {
   )
 }
 
+const useLoginController = () => {
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
+
+  const [payload, { error, data, isSuccess, isError, isLoading }] =
+    useBaseMutationMutation()
+
+  useEffect(() => {
+    if (isSuccess) {
+      Swal.fire({
+        title: `${data?.msg}`,
+        showConfirmButton: false,
+        icon: 'success',
+        timer: 2000
+      })
+      dispatch(addEmployeeDate(data))
+      dispatch(toggleToken())
+      const timer = setTimeout(() => {
+        if (data?.role === USER_ROLES.ADMIN) {
+          navigate(ADMIN_ROUTES.DASHBOARD)
+        } else if (data?.role === USER_ROLES.USER) {
+          navigate(USER_ROUTES.HOME)
+        }
+      }, 2000)
+
+      return () => clearTimeout(timer)
+    }
+  }, [isSuccess])
+
+  useEffect(() => {
+    if (isError) {
+      Swal.fire({
+        title: `${error?.msg}`,
+        icon: 'error',
+        showConfirmButton: true
+      })
+    }
+  }, [isError, error])
+
+  return { payload, isLoading }
+}
 export default LoginForm

@@ -76,7 +76,7 @@ const OTPBoxes = () => {
     }
   }
   return (
-    <Box sx={{ border: '1px solid red', textAlign: 'center' }}>
+    <Box textAlign="center">
       {otp?.map((item, index) => (
         <input
           style={{

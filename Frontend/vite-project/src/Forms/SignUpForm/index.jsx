@@ -16,7 +16,6 @@ const SignUpForm = () => {
 
   const [payload, { error, data, isSuccess, isError, isLoading }] =
     useBaseMutationMutation()
-
   useEffect(() => {
     if (isError) {
       Swal.fire({

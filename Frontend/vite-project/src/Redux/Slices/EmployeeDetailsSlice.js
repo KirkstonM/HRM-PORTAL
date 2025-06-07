@@ -1,18 +1,25 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
-  personalInfo: {}
+  employeeData: null
 }
 
 const EmployeeDetailsSlice = createSlice({
   name: 'EmployeeDetailsSlice',
   initialState,
   reducers: {
-    loadEmployeeData: (state, action) => {
-      state.personalInfo = action.payload
+    addEmployeeDate: (state, action) => {
+      state.employeeData = action.payload
+    },
+    updateEmployeeData: (state, action) => {
+      state.employeeData = {
+        ...state.employeeData,
+        ...action.payload
+      }
     }
   }
 })
 
-export const { loadEmployeeData } = EmployeeDetailsSlice.actions
+export const { addEmployeeDate, updateEmployeeData } =
+  EmployeeDetailsSlice.actions
 export default EmployeeDetailsSlice.reducer

@@ -1,5 +1,6 @@
 import React from 'react'
-import { Button } from '@mui/material'
+import { Button, Typography } from '@mui/material'
+import { green, red } from '@mui/material/colors'
 
 const MyInfoTabs = ({ setActiveTab, activeTab }) => {
   const Tabs = [
@@ -16,11 +17,18 @@ const MyInfoTabs = ({ setActiveTab, activeTab }) => {
       {Tabs.map((tab, index) => (
         <Button
           key={index}
-          sx={{ width: 110, marginX: 1 }}
-          onClick={() => setActiveTab(tab)} // Update state instead of using href
+          onClick={() => setActiveTab(tab)}
           aria-selected={activeTab === tab}
+          sx={{ background: activeTab === tab ? green[300] : '' }}
         >
-          {tab}
+          <Typography
+            sx={{
+              fontSize: '0.875rem',
+              lineHeight: '1.25rem'
+            }}
+          >
+            {tab}
+          </Typography>
         </Button>
       ))}
     </>

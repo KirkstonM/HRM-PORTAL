@@ -2,13 +2,14 @@ import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
   locale: {},
-  theme: 'dark',
+  theme: 'light',
   token: true,
   user: {
     email: '',
     resetPasswordEmail: '',
     resetLinkSubmitted: null
-  }
+  },
+  userData: null
 }
 
 const AppSlice = createSlice({
@@ -32,6 +33,9 @@ const AppSlice = createSlice({
     },
     toggleResetPasswordSubmitted: (state, action) => {
       state.user.resetLinkSubmitted = action.payload
+    },
+    setUserData: (state, action) => {
+      state.userData = action.payload
     }
   }
 })
@@ -42,6 +46,7 @@ export const {
   toggleToken,
   setNewUserEmail,
   setResetPasswordEmail,
-  toggleResetPasswordSubmitted
+  toggleResetPasswordSubmitted,
+  setUserData
 } = AppSlice.actions
 export default AppSlice.reducer

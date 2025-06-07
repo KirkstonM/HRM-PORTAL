@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box, Paper, Typography } from '@mui/material'
+import { Box, Card, CardContent, Paper, Typography } from '@mui/material'
 import Logo from '@Components/Logo'
 
 const OnboardingCard = ({
@@ -11,8 +11,7 @@ const OnboardingCard = ({
   renderProps
 }) => {
   return (
-    <Paper
-      elevation={1}
+    <Card
       sx={{
         width: { lg: '30%', sm: '50%' },
         height: 'auto',
@@ -24,25 +23,27 @@ const OnboardingCard = ({
         borderRadius: 5
       }}
     >
-      <Box sx={{ width: '250px', height: '150px' }}>
-        <Logo
-          Icon={logoIcon}
-          size={logoSize}
-          style={{
-            width: '100%',
-            height: '100%'
-          }}
-        />
-      </Box>
-      <Box sx={{ textAlign: 'center' }}>
-        <Typography variant="h5">{title}</Typography>
-        <Typography variant="subtitle2" sx={{ color: 'gray', mt: 1 }}>
-          {subtitle}
-        </Typography>
-      </Box>
-      <Box sx={{ width: '100%' }}>{children}</Box>
-      {renderProps && renderProps()}
-    </Paper>
+      <CardContent>
+        <Box width={'100%'} height={'150px'}>
+          <Logo
+            Icon={logoIcon}
+            size={logoSize}
+            style={{
+              width: '100%',
+              height: '100%'
+            }}
+          />
+        </Box>
+        <Box textAlign="center">
+          <Typography variant="h5">{title}</Typography>
+          <Typography variant="subtitle2" mt={1} color="text.secondary">
+            {subtitle}
+          </Typography>
+        </Box>
+        <Box>{children}</Box>
+        {renderProps && renderProps()}
+      </CardContent>
+    </Card>
   )
 }
 

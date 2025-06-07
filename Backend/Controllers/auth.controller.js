@@ -3,11 +3,14 @@ import AuthModel from '../Schemas/auth.schema.js'
 import { generateOTP, OTPExpiration } from '../Utils/otpGenerator.js'
 import { generateTokenAndCookies } from '../Utils/authTokenCookies.js'
 import crypto from 'crypto'
-import UserSchema from '../Schemas/user.schema.js'
+import UserModel from '../Schemas/user.schema.js'
 
+//WE CAN REMOVE THE USER SIGN UP FLOWS
+
+//@@TODO:: NEED TO CHECK RESET PASSWORD FLOW, MIGHT HAVE TO USE USERMODAL THAN AUTHMODEL
 const userSignup = async (req, res) => {
   try {
-    const { email, password } = req.body
+    const { email, password, role } = req.body
 
     const isUserExists = await AuthModel.findOne({ email })
     if (isUserExists) {
@@ -22,7 +25,8 @@ const userSignup = async (req, res) => {
       email,
       password: hashPassword,
       verificationOTP,
-      OTPExpiration
+      OTPExpiration,
+      role: role || 'user'
     })
     await user.save()
     generateTokenAndCookies(res, user._id)
@@ -71,13 +75,14 @@ const userLogout = async (req, res) => {
 const login = async (req, res) => {
   try {
     const { email, password } = req.body
-    const user = await AuthModel.findOne({ email })
+    const user = await UserModel.findOne({ email })
     if (!user) {
       return res
         .status(400)
         .json({ success: false, msg: 'User is not registered' })
     }
     const isPasswordValid = await bcrypt.compare(password, user.password)
+    console.log(isPasswordValid)
     if (!isPasswordValid) {
       return res.status(400).json({ success: false, msg: 'Incorrect password' })
     }
@@ -85,7 +90,14 @@ const login = async (req, res) => {
 
     user.lastLogin = new Date()
     await user.save()
-    res.status(200).json({ success: true, msg: 'Successfully logged in' })
+    res.status(200).json({
+      success: true,
+      msg: 'Successfully logged in',
+      data: {
+        ...user._doc,
+        password: undefined
+      }
+    })
   } catch (error) {
     throw Error(error)
   }
@@ -145,7 +157,7 @@ const resetPassword = async (req, res) => {
 
 const userAuthentication = async (req, res) => {
   try {
-    const user = await AuthModel.findById(req.userId)
+    const user = await AuthModel.findById(req.user.id)
     if (!user) {
       res.status(400).json({ success: false, msg: 'Invalid user' })
     }
@@ -161,6 +173,14 @@ const userAuthentication = async (req, res) => {
   }
 }
 
+const adminDashboard = async (req, res) => {
+  res.json({ msg: 'Welcome to admin dashboard' })
+}
+
+const userDashboard = async (req, res) => {
+  res.json({ msg: `Welcome ${req.user.role}` })
+}
+
 export {
   userSignup,
   OTPVerification,
@@ -168,7 +188,9 @@ export {
   login,
   forgotPassword,
   resetPassword,
-  userAuthentication
+  userAuthentication,
+  adminDashboard,
+  userDashboard
 }
 
 //...user._doc, -- this is cause the user returns the entire
