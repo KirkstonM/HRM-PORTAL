@@ -1,4 +1,3 @@
-import React from 'react'
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 
 export const baseHttpRequest = createApi({
@@ -18,8 +17,8 @@ export const baseHttpRequest = createApi({
         method: method,
         params: params
       }),
-      transformResponse: ({ data, ...response }) => {
-        return { ...response, ...data }
+      transformResponse: ({ data, response }) => {
+        return { response, data }
       },
       transformErrorResponse: ({ data, ...response }) => {
         return { ...data, ...response }

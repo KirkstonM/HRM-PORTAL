@@ -1,11 +1,7 @@
 import EmergencyContactForm from '@Forms/EmergencyContactForm'
 
 const EmergencyContact = () => {
-  return (
-    <>
-      <EmergencyContactForm />
-    </>
-  )
+  return <EmergencyContactForm />
 }
 
 export default EmergencyContact

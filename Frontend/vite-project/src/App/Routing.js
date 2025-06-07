@@ -1,10 +1,15 @@
 import React, { lazy } from 'react'
-import { AUTH_ROUTES, LOGIN_ROUTES } from '@Constants/Routes'
+import { USER_ROUTES, LOGIN_ROUTES, ADMIN_ROUTES } from '@Constants/Routes'
 
 const LoginPage = lazy(() => import('@Pages/UserOnboarding/Login'))
 const SignupPage = lazy(() => import('@Pages/UserOnboarding/Signup'))
-const ResetPassword = lazy(() => import('@Pages/UserOnboarding/ResetPassword'))
-const ForgotPassword = lazy(
+const OtpVerificationPage = lazy(
+  () => import('@Pages/UserOnboarding/OTPVerify')
+)
+const ResetPasswordPage = lazy(
+  () => import('@Pages/UserOnboarding/ResetPassword')
+)
+const ForgotPasswordPage = lazy(
   () => import('@Pages/UserOnboarding/ForgotPassword')
 )
 
@@ -12,6 +17,10 @@ const HomePage = lazy(() => import('@Pages/Home'))
 const MyInfoPage = lazy(() => import('@Pages/MyInfo'))
 const PeoplePage = lazy(() => import('@Pages/People'))
 const FilesPage = lazy(() => import('@Pages/Files'))
+const CalenderPage = lazy(() => import('@Pages/Calender'))
+
+const AdminDashboard = lazy(() => import('@Pages/Admin/Dashboard'))
+const LeavesPage = lazy(() => import('@Pages/Admin/Leaves'))
 
 const ONBOARDING_ROUTES = [
   {
@@ -23,32 +32,59 @@ const ONBOARDING_ROUTES = [
     Component: SignupPage
   },
   {
+    Path: LOGIN_ROUTES.OTP_VERIFICATION,
+    Component: OtpVerificationPage
+  },
+  {
     Path: LOGIN_ROUTES.FORGOT_PASSWORD,
-    Component: ForgotPassword
+    Component: ForgotPasswordPage
   },
   {
     Path: LOGIN_ROUTES.RESET_PASSWORD,
-    Component: ResetPassword
+    Component: ResetPasswordPage
   }
 ]
 
-const AUTH_BASE_ROUTES = [
+const USER_BASE_ROUTES = [
   {
-    Path: AUTH_ROUTES.HOME,
+    Path: USER_ROUTES.HOME,
     Component: HomePage
   },
   {
-    Path: AUTH_ROUTES.MY_INFO,
+    Path: USER_ROUTES.MY_INFO,
     Component: MyInfoPage
   },
   {
-    Path: AUTH_ROUTES.PEOPLE,
+    Path: USER_ROUTES.PEOPLE,
     Component: PeoplePage
   },
   {
-    Path: AUTH_ROUTES.FILES,
+    Path: USER_ROUTES.FILES,
     Component: FilesPage
+  },
+  {
+    Path: USER_ROUTES.CALENDER,
+    Component: CalenderPage
   }
 ]
 
-export { AUTH_BASE_ROUTES, ONBOARDING_ROUTES }
+const ADMIN_BASE_ROUTES = [
+  {
+    Path: ADMIN_ROUTES.DASHBOARD,
+    Component: AdminDashboard
+  },
+  {
+    Path: ADMIN_ROUTES.LEAVES,
+    Component: LeavesPage
+  },
+  {
+    Path: ADMIN_ROUTES.MY_INFO,
+    Component: MyInfoPage
+  },
+  {
+    Path: ADMIN_ROUTES.CALENDER,
+    Component: CalenderPage
+  }
+]
+
+export { USER_BASE_ROUTES, ONBOARDING_ROUTES, ADMIN_BASE_ROUTES }

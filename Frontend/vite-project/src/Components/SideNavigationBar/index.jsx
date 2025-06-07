@@ -1,126 +1,229 @@
 import * as React from 'react'
 import {
   Box,
-  Drawer,
-  Toolbar,
   List,
-  Divider,
-  ListItem,
-  ListItemButton,
   ListItemIcon,
-  ListItemText,
   Avatar,
-  Stack,
-  Typography
+  Typography,
+  Divider,
+  IconButton,
+  ListItem,
+  ListItemText,
+  Drawer,
+  ListItemButton
 } from '@mui/material'
-import HomeIcon from '@mui/icons-material/Home'
-import InfoIcon from '@mui/icons-material/Info'
-import PeopleAltIcon from '@mui/icons-material/PeopleAlt'
-import FileCopyIcon from '@mui/icons-material/FileCopy'
-import { NavLink } from 'react-router-dom'
-import Index from '../OptionsMenu/index.jsx'
+import { useNavigate } from 'react-router-dom'
+import { ADMIN_ROUTES, USER_ROUTES } from '@Constants/Routes/index.js'
+import {
+  Dashboard,
+  People,
+  EventNote,
+  CalendarToday,
+  AttachMoney,
+  Description,
+  Menu,
+  Info
+} from '@mui/icons-material'
+import { useSelector } from 'react-redux'
+import { USER_ROLES } from '@Constants/ConstantValues/index.js'
+import { deepPurple } from '@mui/material/colors'
 
-const drawerWidth = 240
+const SideNavigationBar = ({
+  isMobile,
+  mobileOpen,
+  collapsed,
+  handleDrawerToggle,
+  isAdmin,
+  fullName,
+  email,
+  avatar
+}) => {
+  const { navItems } = useNavigationController(isAdmin)
+  const drawerWidth = 240
 
-const SIDEBAR_ROUTES = [
-  {
-    name: 'Home',
-    Icon: <HomeIcon />,
-    route: 'home'
-  },
-  {
-    name: 'My Info',
-    Icon: <InfoIcon />,
-    route: 'employee/:id'
-  },
-  {
-    name: 'People',
-    Icon: <PeopleAltIcon />,
-    route: 'people'
-  },
-  {
-    name: 'Files',
-    Icon: <FileCopyIcon />,
-    route: 'files'
-  }
-]
-
-const SideNavigationBar = () => {
-  return (
+  const drawerContent = (
     <Box
       sx={{
-        // color: rgb(12 16 23);
-        width: drawerWidth,
-        height: '100vh',
+        width: collapsed ? 70 : drawerWidth,
+        p: 2,
+        boxSizing: 'border-box',
         display: 'flex',
-        flexDirection: 'column'
+        flexDirection: 'column',
+        height: '100%'
       }}
     >
-      <Drawer
+      {/* Logo and toggle */}
+      <Box
         sx={{
-          width: drawerWidth,
-          flexShrink: 0,
-          '& .MuiDrawer-paper': {
-            width: drawerWidth,
-            boxSizing: 'border-box'
-          }
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: collapsed ? 'center' : 'space-between',
+          mb: 3
         }}
-        variant="permanent"
-        anchor="left"
       >
-        <Toolbar />
-        <Divider />
-        <List>
-          {SIDEBAR_ROUTES.map(({ name, Icon, route }, index) => (
-            <NavLink
-              to={route}
-              key={index}
-              style={{ textDecoration: 'none', color: 'inherit' }}
-            >
-              <ListItem key={name}>
-                <ListItemButton>
-                  <ListItemIcon>{Icon}</ListItemIcon>
-                  <ListItemText primary={name} />
-                </ListItemButton>
-              </ListItem>
-            </NavLink>
-          ))}
-        </List>
-        <Divider />
+        {!collapsed && (
+          <Typography variant="h6" fontWeight="bold">
+            📄 Pagedone
+          </Typography>
+        )}
+        <IconButton onClick={handleDrawerToggle}>
+          <Menu />
+        </IconButton>
+      </Box>
 
-        <Stack
-          direction="row"
-          sx={{
-            p: 2,
-            gap: 1,
-            alignItems: 'center',
-            borderTop: '1px solid',
-            borderColor: 'divider',
-            mt: 'auto'
-          }}
-        >
+      {/* Nav List */}
+      <List>
+        {navItems?.map(({ icon, text, onClick }, index) => (
+          <ListItem button key={index} onClick={onClick}>
+            <ListItemIcon sx={{ minWidth: collapsed ? 'auto' : 40 }}>
+              {icon}
+            </ListItemIcon>
+            {!collapsed && <ListItemText primary={text} />}
+          </ListItem>
+        ))}
+      </List>
+
+      {/* Footer */}
+      <Box sx={{ mt: 'auto' }}>
+        <Divider />
+        <Box sx={{ textAlign: 'center', mt: 2 }}>
           <Avatar
-            sizes="small"
-            alt="Riley Carter"
-            src="/static/images/avatar/7.jpg"
-            sx={{ width: 36, height: 36 }}
-          />
-          <Box sx={{ mr: 'auto' }}>
-            <Typography
-              variant="body2"
-              sx={{ fontWeight: 500, lineHeight: '16px' }}
-            >
-              Riley Carter
-            </Typography>
-            <Typography variant="caption" sx={{ color: 'text.secondary' }}>
-              riley@email.com
-            </Typography>
-          </Box>
-          <Index />
-        </Stack>
-      </Drawer>
+            src={avatar}
+            alt={fullName}
+            sx={{ bgcolor: deepPurple[500], mx: 'auto' }}
+          >
+            {fullName?.charAt(0)}
+          </Avatar>
+          {!collapsed && (
+            <>
+              <Typography variant="body2">{fullName}</Typography>
+              <Typography variant="caption">{email}</Typography>
+            </>
+          )}
+        </Box>
+      </Box>
     </Box>
   )
+
+  return (
+    <Box sx={{ display: 'flex' }}>
+      {/* Mobile Drawer */}
+      {isMobile ? (
+        <Drawer
+          variant="temporary"
+          open={mobileOpen}
+          onClose={handleDrawerToggle}
+          ModalProps={{ keepMounted: true }}
+          sx={{
+            '& .MuiDrawer-paper': {
+              width: drawerWidth
+            }
+          }}
+        >
+          {drawerContent}
+        </Drawer>
+      ) : (
+        // Desktop Drawer
+        <Drawer
+          variant="permanent"
+          open
+          sx={{
+            width: collapsed ? 70 : drawerWidth,
+            flexShrink: 0,
+            '& .MuiDrawer-paper': {
+              width: collapsed ? 70 : drawerWidth,
+              transition: 'width 0.3s',
+              overflowX: 'hidden',
+              boxSizing: 'border-box'
+            }
+          }}
+        >
+          {drawerContent}
+        </Drawer>
+      )}
+    </Box>
+  )
+}
+
+const useNavigationController = (isAdmin) => {
+  const navigation = useNavigate()
+  const userNavItems = [
+    {
+      icon: <Dashboard />,
+      text: 'Home',
+      onClick: () => navigation(USER_ROUTES.HOME)
+    },
+    {
+      icon: <Info />,
+      text: 'My Info',
+      onClick: () => navigation(USER_ROUTES.MY_INFO)
+    },
+    {
+      icon: <People />,
+      text: 'People',
+      onClick: () => navigation(USER_ROUTES.PEOPLE)
+    },
+    {
+      icon: <CalendarToday />,
+      text: 'Calendar',
+      onClick: () => navigation(USER_ROUTES.CALENDER)
+    },
+    {
+      icon: <Description />,
+      text: 'Files',
+      onClick: () => navigation(USER_ROUTES.FILES)
+    }
+  ]
+
+  const adminNavItems = [
+    {
+      icon: <Dashboard />,
+      text: 'Dashboard',
+      onClick: () => navigation(ADMIN_ROUTES.DASHBOARD)
+    },
+    {
+      icon: <People />,
+      text: 'Employees',
+      onClick: () => {}
+    },
+    {
+      icon: <EventNote />,
+      text: 'Attendances',
+      onClick: () => {}
+    },
+    {
+      icon: <CalendarToday />,
+      text: 'Calendar',
+      onClick: () => navigation(ADMIN_ROUTES.CALENDER)
+    },
+    {
+      icon: <EventNote />,
+      text: 'Leaves',
+      onClick: () => navigation(ADMIN_ROUTES.LEAVES)
+    },
+    {
+      icon: <AttachMoney />,
+      text: 'Payroll',
+      onClick: () => {}
+    },
+    {
+      icon: <Description />,
+      text: 'Documents',
+      onClick: () => {}
+    },
+    {
+      icon: <Info />,
+      text: 'My Info',
+      onClick: () => navigation(ADMIN_ROUTES.MY_INFO)
+    }
+  ]
+  const navItems = isAdmin ? adminNavItems : userNavItems
+  return {
+    userNavItems,
+    adminNavItems,
+    isAdmin,
+    navItems
+  }
 }
 
 export default SideNavigationBar

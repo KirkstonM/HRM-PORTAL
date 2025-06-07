@@ -20,6 +20,11 @@ const authSchema = mongoose.Schema(
       type: Boolean,
       default: false
     },
+    role: {
+      type: String,
+      enum: ['user', 'manager', 'admin'],
+      default: 'user'
+    },
     verificationOTP: String,
     OTPExpiration: Date,
     resetToken: String,

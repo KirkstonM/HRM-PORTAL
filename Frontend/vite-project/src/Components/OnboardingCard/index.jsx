@@ -1,33 +1,49 @@
 import React from 'react'
-import { Box, Paper, Typography } from '@mui/material'
+import { Box, Card, CardContent, Paper, Typography } from '@mui/material'
 import Logo from '@Components/Logo'
-import { Link } from 'react-router-dom'
-import { LOGIN_ROUTES } from '@Constants/Routes/index.js'
 
-const OnboardingCard = ({ logoIcon, logoSize, title, children }) => {
+const OnboardingCard = ({
+  logoIcon,
+  logoSize,
+  title,
+  subtitle,
+  children,
+  renderProps
+}) => {
   return (
-    <Paper
-      elevation={3}
-      square={false}
+    <Card
       sx={{
-        width: '30%',
+        width: { lg: '30%', sm: '50%' },
         height: 'auto',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
         rowGap: 5,
-        p: 3
+        p: 3,
+        borderRadius: 5
       }}
     >
-      <Box>
-        <Logo Icon={logoIcon} size={logoSize} />
-      </Box>
-      <Typography variant="h4">{title}</Typography>
-      <Box sx={{ width: '100%' }}>{children}</Box>
-      <Box>
-        <Typography>New Here ?</Typography>
-      </Box>
-    </Paper>
+      <CardContent>
+        <Box width={'100%'} height={'150px'}>
+          <Logo
+            Icon={logoIcon}
+            size={logoSize}
+            style={{
+              width: '100%',
+              height: '100%'
+            }}
+          />
+        </Box>
+        <Box textAlign="center">
+          <Typography variant="h5">{title}</Typography>
+          <Typography variant="subtitle2" mt={1} color="text.secondary">
+            {subtitle}
+          </Typography>
+        </Box>
+        <Box>{children}</Box>
+        {renderProps && renderProps()}
+      </CardContent>
+    </Card>
   )
 }
 
