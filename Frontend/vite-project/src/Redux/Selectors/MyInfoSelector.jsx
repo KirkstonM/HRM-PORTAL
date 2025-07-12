@@ -18,7 +18,7 @@ export const selectEmployeeDetails = createSelector(
     work_phone: employee?.work_phone || '',
     mobile_phone: employee?.mobile_phone || '',
     home_phone: employee?.home_phone || '',
-    work_email: employee?.work_email || '',
+    work_email: employee?.email || '',
     home_email: employee?.home_email || '',
     user_identification: {
       primary_id_type: employee?.user_identification?.primary_id_type || '',

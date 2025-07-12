@@ -18,9 +18,14 @@ const MyInfoPage = lazy(() => import('@Pages/MyInfo'))
 const PeoplePage = lazy(() => import('@Pages/People'))
 const FilesPage = lazy(() => import('@Pages/Files'))
 const CalenderPage = lazy(() => import('@Pages/Calender'))
+const ChangePasswordPage = lazy(() => import('@Pages/ChangePassword'))
 
 const AdminDashboard = lazy(() => import('@Pages/Admin/Dashboard'))
 const LeavesPage = lazy(() => import('@Pages/Admin/Leaves'))
+const EmployeesPage = lazy(() => import('@Pages/Admin/Employees'))
+const SingleEmployeePage = lazy(
+  () => import('@Pages/Admin/Employees/SingleEmployee')
+)
 
 const ONBOARDING_ROUTES = [
   {
@@ -65,6 +70,10 @@ const USER_BASE_ROUTES = [
   {
     Path: USER_ROUTES.CALENDER,
     Component: CalenderPage
+  },
+  {
+    Path: USER_ROUTES.CHANGE_PASSWORD,
+    Component: ChangePasswordPage
   }
 ]
 
@@ -84,6 +93,18 @@ const ADMIN_BASE_ROUTES = [
   {
     Path: ADMIN_ROUTES.CALENDER,
     Component: CalenderPage
+  },
+  {
+    Path: ADMIN_ROUTES.EMPLOYEES,
+    Component: EmployeesPage
+  },
+  {
+    Path: ADMIN_ROUTES.CHANGE_PASSWORD,
+    Component: ChangePasswordPage
+  },
+  {
+    Path: ADMIN_ROUTES.SINGLE_EMPLOYEE,
+    Component: SingleEmployeePage
   }
 ]
 

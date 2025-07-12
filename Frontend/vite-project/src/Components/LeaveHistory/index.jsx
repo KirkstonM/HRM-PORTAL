@@ -34,33 +34,8 @@ const LeaveHistory = ({ data }) => {
         </Box>
 
         <Grid container spacing={2} mb={2}>
-          <Grid item xs={6} md={3}>
-            <FormControl fullWidth size="small">
-              <InputLabel>Leave Type</InputLabel>
-              <Select
-                value={leaveType}
-                label="Leave Type"
-                onChange={(e) => setLeaveType(e.target.value)}
-              >
-                <MenuItem value="Casual Leave">Casual Leave</MenuItem>
-                <MenuItem value="Birthday Leave">Birthday Leave</MenuItem>
-              </Select>
-            </FormControl>
-          </Grid>
-          <Grid item xs={6} md={3}>
-            <FormControl fullWidth size="small">
-              <InputLabel>Filter</InputLabel>
-              <Select
-                value={filter}
-                label="Filter"
-                onChange={(e) => setFilter(e.target.value)}
-              >
-                <MenuItem value="All">All</MenuItem>
-                <MenuItem value="Used">Used</MenuItem>
-                <MenuItem value="Earned">Earned</MenuItem>
-              </Select>
-            </FormControl>
-          </Grid>
+          <Grid item xs={6} md={3}></Grid>
+          <Grid item xs={6} md={3}></Grid>
         </Grid>
 
         <Table>

@@ -3,6 +3,7 @@ import {
   AppBar,
   Box,
   Button,
+  Divider,
   Stack,
   Toolbar,
   Typography,
@@ -16,7 +17,7 @@ import AddEmployee from '@Components/AddEmployee/index.jsx'
 import { useBaseMutationMutation } from '@Redux/RTKQuery/HttpRequest.js'
 import { ONBOARDING_ENDPOINTS } from '@Constants/Apis/index.js'
 import { useNavigate } from 'react-router-dom'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { USER_ROLES } from '@Constants/ConstantValues/index.js'
 
 const AppLayout = ({ children }) => {
@@ -26,7 +27,7 @@ const AppLayout = ({ children }) => {
   const isMobile = useMediaQuery(theme.breakpoints.down('md'))
   const [mobileOpen, setMobileOpen] = useState(false)
   const [collapsed, setCollapsed] = useState(false)
-
+  const dispatch = useDispatch()
   const handleDrawerToggle = () => {
     if (isMobile) {
       setMobileOpen(!mobileOpen)
@@ -43,9 +44,9 @@ const AppLayout = ({ children }) => {
       endpoint: ONBOARDING_ENDPOINTS.LOGOUT,
       method: 'POST'
     })
-  }
-
-  if (isSuccess) {
+    dispatch({ type: 'app/reset' })
+    localStorage.clear()
+    sessionStorage.clear()
     navigate('/')
   }
   return (
@@ -83,6 +84,7 @@ const AppLayout = ({ children }) => {
               </Button>
             </Stack>
           </Toolbar>
+          <Divider sx={{ p: 1 }} />
         </AppBar>
 
         {isMobile && (

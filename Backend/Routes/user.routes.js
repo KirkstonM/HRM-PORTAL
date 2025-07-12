@@ -12,7 +12,8 @@ import {
   accruedLeaves,
   checkAuth,
   getOrgTree,
-  getCalendarHolidays
+  getCalendarHolidays,
+  getUpcomingBirthdays
 } from '../Controllers/user.controller.js'
 
 const router = express.Router()
@@ -40,4 +41,5 @@ router.post('/accrue-leaves', checkAuthentication, accruedLeaves)
 
 router.get('/org-tree', checkAuthentication, getOrgTree)
 router.get('/calendar-leaves', checkAuthentication, getCalendarHolidays)
+router.get('/birthdays', checkAuthentication, getUpcomingBirthdays)
 export default router

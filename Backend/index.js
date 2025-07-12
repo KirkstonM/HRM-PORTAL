@@ -4,11 +4,13 @@ import dotenv from 'dotenv'
 import bodyParser from 'body-parser'
 import cors from 'cors'
 import cookieParser from 'cookie-parser'
+import * as path from 'node:path'
 
 import localeRoutes from './Routes/locale.routes.js'
 import authRoutes from './Routes/auth.routes.js'
 import userRoutes from './Routes/user.routes.js'
 import adminRoutes from './Routes/admin.routes.js'
+import multerRoutes from './multer.js'
 const app = express()
 
 app.use(express.json())
@@ -28,6 +30,9 @@ app.use('/', localeRoutes)
 app.use('/', authRoutes)
 app.use('/', userRoutes)
 app.use('/', adminRoutes)
+app.use('/', multerRoutes)
+
+app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')))
 
 //PORT INITIALIZATION
 const PORT = process.env.PORT || 3001

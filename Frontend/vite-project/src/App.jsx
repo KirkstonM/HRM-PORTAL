@@ -10,6 +10,7 @@ import {
 } from '@App/Routing.js'
 import AuthWrapper from '@Components/AuthWrapper'
 import { blue, grey } from '@mui/material/colors'
+import Unauthorized from '@Pages/Unauthorized/index.jsx'
 
 function App() {
   const defaultTheme = useSelector((state) => state.app.theme)
@@ -38,6 +39,8 @@ function App() {
         <CssBaseline />
         <Suspense fallback={'Loading...'}>
           <Routes>
+            <Route path="/unauthorized" element={<Unauthorized />} />
+            <Route path="*" element={<div>404 Not Found</div>} />
             {ONBOARDING_ROUTES.map(({ Component, Path }, index) => (
               <Route key={index} element={<Component />} path={Path} exact />
             ))}

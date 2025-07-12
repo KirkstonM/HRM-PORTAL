@@ -22,7 +22,8 @@ import {
   AttachMoney,
   Description,
   Menu,
-  Info
+  Info,
+  Password
 } from '@mui/icons-material'
 import { useSelector } from 'react-redux'
 import { USER_ROLES } from '@Constants/ConstantValues/index.js'
@@ -169,9 +170,9 @@ const useNavigationController = (isAdmin) => {
       onClick: () => navigation(USER_ROUTES.CALENDER)
     },
     {
-      icon: <Description />,
-      text: 'Files',
-      onClick: () => navigation(USER_ROUTES.FILES)
+      icon: <Password />,
+      text: 'Change Password',
+      onClick: () => navigation(USER_ROUTES.CHANGE_PASSWORD)
     }
   ]
 
@@ -184,7 +185,7 @@ const useNavigationController = (isAdmin) => {
     {
       icon: <People />,
       text: 'Employees',
-      onClick: () => {}
+      onClick: () => navigation(ADMIN_ROUTES.EMPLOYEES)
     },
     {
       icon: <EventNote />,
@@ -207,14 +208,14 @@ const useNavigationController = (isAdmin) => {
       onClick: () => {}
     },
     {
-      icon: <Description />,
-      text: 'Documents',
-      onClick: () => {}
-    },
-    {
       icon: <Info />,
       text: 'My Info',
       onClick: () => navigation(ADMIN_ROUTES.MY_INFO)
+    },
+    {
+      icon: <Password />,
+      text: 'Change Password',
+      onClick: () => navigation(ADMIN_ROUTES.CHANGE_PASSWORD)
     }
   ]
   const navItems = isAdmin ? adminNavItems : userNavItems

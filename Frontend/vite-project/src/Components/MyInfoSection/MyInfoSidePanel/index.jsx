@@ -25,8 +25,14 @@ import {
 import { dateStringFormat, getDateDifference } from '@Utils/DateConverter.js'
 
 const MyInfoSidePanel = () => {
-  const { vitalList, userData, hiredDate, dateDif, dateDifFormat } =
-    useSideInfoPanelController()
+  const {
+    vitalList,
+    userData,
+    hiredDate,
+    dateDif,
+    dateDifFormat,
+    employeeManager
+  } = useSideInfoPanelController()
   const theme = useTheme()
   const isMobile = useMediaQuery(theme.breakpoints.down('md'))
 
@@ -91,7 +97,7 @@ const MyInfoSidePanel = () => {
               Manager
             </Typography>
             <Typography variant="body2" ml={2}>
-              TITLE
+              {employeeManager}
             </Typography>
           </Box>
         </CustomBox>
@@ -131,70 +137,19 @@ const useSideInfoPanelController = () => {
 
   const hiredDate = dateStringFormat(userData?.createdAt)
   const dateDif = getDateDifference(hiredDate)
-  const dateDifFormat = `${dateDif?.years} Year(s) - ${dateDif?.months} Month(s)- ${dateDif?.days} Day(s)`
-  return { vitalList, userData, hiredDate, dateDif, dateDifFormat }
+  const dateDifFormat = `${dateDif?.years}y - ${dateDif?.months}m - ${dateDif?.days}d`
+  const managerIndex = userData?.manager_history?.length - 1
+  const manager = userData?.manager_history[managerIndex]?.manager_name
+  const employeeManager = userData?.manager_history.length > 0 ? manager : '--'
+
+  return {
+    vitalList,
+    userData,
+    hiredDate,
+    dateDif,
+    dateDifFormat,
+    employeeManager
+  }
 }
 
 export default MyInfoSidePanel
-
-/**{
- "success": true,
- "msg": "Successfully logged in",
- "data": {
- "address_details": {
- "street_01": "78th Street",
- "street_02": "",
- "city": "Watalong",
- "province": "Northern",
- "postal_code": "112342",
- "country": "Sri Lanka"
- },
- "user_identification": {
- "primary_id_type": "National Identity Card",
- "primary_id_number": "123456789V",
- "secondary_id_type": "Passport",
- "secondary_id_number": "1241413F3F"
- },
- "social_media": {
- "linkedIn": "linkedin.com",
- "twitter": "",
- "facebook": ""
- },
- "emergency_contact": {
- "emergency_contact_name": "",
- "emergency_contact_relation": "",
- "emergency_contact_work_phone": "",
- "emergency_contact_home_phone": "",
- "emergency_contact_mobile_phone": "",
- "emergency_contact_email": "",
- "emergency_contact_address": "",
- "emergency_contact_country": "",
- "emergency_contact_city": "",
- "emergency_contact_province": "",
- "emergency_contact_postal_code": ""
- },
- "_id": "682332917dc7c6e203b79e7f",
- "first_name": "Kirkston",
- "last_name": "Melder",
- "full_name": "Kirkston Melder",
- "job_title": "Software Engineer",
- "email": "kirk@gmail.com",
- "role": "user",
- "reporting_manager": null,
- "employee_id": "EMP003",
- "createdAt": "2025-05-13T11:52:49.116Z",
- "updatedAt": "2025-05-13T13:06:59.365Z",
- "__v": 0,
- "gender": "Male",
- "home_email": "kirk@gmail.com",
- "home_phone": "0118873773",
- "middle_name": "",
- "mobile_phone": "0772312342",
- "nationality": "Sri Lankan",
- "preferred_name": "Kirkston",
- "work_email": "random@gmail.com"
- }
- }
- *
- *
- * */

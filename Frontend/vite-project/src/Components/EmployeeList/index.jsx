@@ -16,7 +16,8 @@ import {
   Chip,
   Menu,
   MenuItem,
-  Box
+  Box,
+  Button
 } from '@mui/material'
 import MoreVertIcon from '@mui/icons-material/MoreVert'
 import {
@@ -28,8 +29,10 @@ import { dateStringFormat } from '@Utils/DateConverter.js'
 import { deepPurple } from '@mui/material/colors'
 import UpdateEmployee from '@Components/UpdateEmployee/index.jsx'
 import Swal from 'sweetalert2'
-import { loadAllUsers } from '@Redux/Slices/AppSlice.js'
+import { filterUserData, loadAllUsers } from '@Redux/Slices/AppSlice.js'
 import { useDispatch } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+import { ADMIN_ROUTES } from '@Constants/Routes/index.js'
 
 const statusColor = {
   Active: 'success',
@@ -37,29 +40,22 @@ const statusColor = {
   Onboarding: 'warning'
 }
 
-const EmployeeLeaveTable = () => {
-  const {
-    employeeList,
-    deleteEmployee,
-    open,
-    modalOpen,
-    modalClose,
-    callbackUpdate,
-    selectedId,
-    mappedList
-  } = useEmployeeTableController()
-  const [anchorEl, setAnchorEl] = React.useState(null)
-  const [selectedRow, setSelectedRow] = React.useState(null)
+const EmployeeList = () => {
+  const { employeeList, open, modalOpen, modalClose, selectedId, onPress } =
+    useEmployeeTableController()
 
-  const handleMenuClick = (event, index) => {
-    setAnchorEl(event.currentTarget)
-    setSelectedRow(index)
-  }
+  const [finder, setFinder] = useState('')
 
-  const handleMenuClose = () => {
-    setAnchorEl(null)
-    setSelectedRow(null)
+  const handleChange = (e) => {
+    setFinder(e.target.value)
   }
+  const filterList = employeeList.filter((emp) => {
+    return emp.first_name.toLowerCase().includes(finder.toLowerCase())
+  })
+
+  const mappedList = filterList.sort((a, b) =>
+    a.first_name.toLowerCase().localeCompare(b?.first_name.toLowerCase())
+  )
 
   return (
     <Box
@@ -71,8 +67,17 @@ const EmployeeLeaveTable = () => {
       }}
     >
       <Typography variant="h6" gutterBottom>
-        Employees Status
+        Employees
       </Typography>
+      <TextField
+        name="finder"
+        type="text"
+        onChange={handleChange}
+        id="finder"
+        sx={{ width: '100%' }}
+        size="small"
+        placeholder="Search for employee"
+      />
       <TableContainer>
         <Table>
           <TableHead>
@@ -81,12 +86,16 @@ const EmployeeLeaveTable = () => {
               <TableCell>Department</TableCell>
               <TableCell>Join Date</TableCell>
               <TableCell>Status</TableCell>
-              <TableCell>Actions</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {mappedList?.map((employee, index) => (
-              <TableRow key={employee?._id}>
+              <TableRow
+                key={employee?._id}
+                hover
+                sx={{ cursor: 'pointer' }}
+                onClick={() => onPress(employee?._id)}
+              >
                 <TableCell>
                   <div
                     style={{
@@ -123,28 +132,6 @@ const EmployeeLeaveTable = () => {
                     size="small"
                   />
                 </TableCell>
-                <TableCell>
-                  <IconButton onClick={(e) => handleMenuClick(e, index)}>
-                    <MoreVertIcon />
-                  </IconButton>
-                  <Menu
-                    anchorEl={anchorEl}
-                    open={selectedRow === index}
-                    onClose={handleMenuClose}
-                  >
-                    <MenuItem
-                      onClick={() => {
-                        modalOpen()
-                        callbackUpdate(employee?._id)
-                      }}
-                    >
-                      Edit
-                    </MenuItem>
-                    <MenuItem onClick={() => deleteEmployee(employee?._id)}>
-                      Delete
-                    </MenuItem>
-                  </Menu>
-                </TableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -166,6 +153,7 @@ const useEmployeeTableController = () => {
 
   const modalOpen = () => setOpen(true)
   const modalClose = () => setOpen(false)
+  const navigation = useNavigate()
   const dispatch = useDispatch()
   const {
     data: employees,
@@ -183,62 +171,25 @@ const useEmployeeTableController = () => {
 
   const employeeList = employees?.data || []
 
-  const mappedList = [...(employeeList || [])].sort((a, b) =>
-    a.first_name.toLowerCase().localeCompare(b?.first_name.toLowerCase())
-  )
-
-  const deleteEmployee = async (id) => {
-    const confirmation = await Swal.fire({
-      title: 'Are you sure?',
-      text: 'This action will delete the employee permanently!',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#d33',
-      cancelButtonColor: '#3085d6',
-      confirmButtonText: 'Yes, delete it!'
-    })
-
-    if (confirmation.isConfirmed) {
-      try {
-        await payload({
-          endpoint: `${ADMIN_ENDPOINTS.DELETE_USER}${id}`,
-          method: 'DELETE'
-        })
-
-        await refetch()
-
-        Swal.fire({
-          title: 'Deleted!',
-          text: 'The employee has been removed.',
-          icon: 'success',
-          timer: 2000,
-          showConfirmButton: false
-        })
-      } catch (err) {
-        console.error('Error deleting employee:', err)
-        Swal.fire({
-          title: 'Error!',
-          text: 'Failed to delete employee.',
-          icon: 'error',
-          confirmButtonText: 'Okay'
-        })
-      }
-    }
-  }
-
   const callbackUpdate = (id) => {
     setSelectedId(id)
   }
+
+  const onPress = (id) => {
+    const path = ADMIN_ROUTES.SINGLE_EMPLOYEE.replace(':id', id)
+    dispatch(filterUserData({ id }))
+    navigation(path)
+  }
   return {
     employeeList,
-    deleteEmployee,
     open,
     modalOpen,
     modalClose,
     callbackUpdate,
     selectedId,
-    mappedList
+    navigation,
+    onPress
   }
 }
 
-export default EmployeeLeaveTable
+export default EmployeeList

@@ -5,7 +5,6 @@ export const baseHttpRequest = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: import.meta.env.VITE_API_URL,
     prepareHeaders: (headers) => {
-      headers.set('Content-Type', 'application/json')
       return headers
     },
     credentials: 'include'

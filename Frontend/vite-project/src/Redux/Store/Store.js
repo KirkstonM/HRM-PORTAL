@@ -5,12 +5,18 @@ import AppReducer from '../Slices/AppSlice.js'
 import EmployeeReducer from '../Slices/EmployeeDetailsSlice.js'
 import { setupListeners } from '@reduxjs/toolkit/query'
 
-const rootReducer = combineReducers({
+const appReducer = combineReducers({
   app: AppReducer,
   employee: EmployeeReducer,
   [baseHttpRequest.reducerPath]: baseHttpRequest.reducer
 })
 
+const rootReducer = (state, action) => {
+  if (action.type === 'app/reset') {
+    state = undefined
+  }
+  return appReducer(state, action)
+}
 export const store = configureStore({
   reducer: rootReducer,
   middleware: (getDefaultMiddleware) =>

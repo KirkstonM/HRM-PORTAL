@@ -1,8 +1,14 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { useFormik } from 'formik'
-import { Box, Button, TextField } from '@mui/material'
+import {
+  Box,
+  Button,
+  IconButton,
+  InputAdornment,
+  TextField
+} from '@mui/material'
 import Swal from 'sweetalert2'
 import { useBaseMutationMutation } from '@Redux/RTKQuery/HttpRequest.js'
 import { setUserData, toggleToken } from '@Redux/Slices/AppSlice.js'
@@ -11,9 +17,11 @@ import { ADMIN_ROUTES, LOGIN_ROUTES, USER_ROUTES } from '@Constants/Routes'
 import { USER_ROLES } from '@Constants/ConstantValues'
 import { loginFormValidation } from '@Validations'
 import { addEmployeeDate } from '@Redux/Slices/EmployeeDetailsSlice.js'
+import { Visibility, VisibilityOff } from '@mui/icons-material'
 
 const LoginForm = () => {
-  const { payload, isLoading } = useLoginController()
+  const { payload, isLoading, toggleShowPassword, showPassword } =
+    useLoginController()
 
   const { values, errors, handleSubmit, handleChange, touched, handleBlur } =
     useFormik({
@@ -51,7 +59,7 @@ const LoginForm = () => {
         id="password"
         label="Password"
         variant="outlined"
-        type="password"
+        type={showPassword ? 'text' : 'password'}
         name={'password'}
         onChange={handleChange}
         onBlur={handleBlur}
@@ -61,6 +69,15 @@ const LoginForm = () => {
         error={touched.password && errors.password}
         helperText={errors.password}
         sx={{ mt: 3 }}
+        InputProps={{
+          endAdornment: (
+            <InputAdornment position="end">
+              <IconButton onClick={toggleShowPassword} edge="end">
+                {showPassword ? <Visibility /> : <VisibilityOff />}
+              </IconButton>
+            </InputAdornment>
+          )
+        }}
       />
       <Box sx={{ textAlign: 'end', mt: 2 }}>
         <Link
@@ -86,6 +103,7 @@ const LoginForm = () => {
 }
 
 const useLoginController = () => {
+  const [showPassword, setShowPassword] = useState(false)
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
@@ -124,6 +142,7 @@ const useLoginController = () => {
     }
   }, [isError, error])
 
-  return { payload, isLoading }
+  const toggleShowPassword = () => setShowPassword(!showPassword)
+  return { payload, isLoading, toggleShowPassword, showPassword }
 }
 export default LoginForm
