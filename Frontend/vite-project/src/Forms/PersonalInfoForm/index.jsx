@@ -24,23 +24,38 @@ import { USER_ENDPOINTS } from '@Constants/Apis/index.js'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { DatePicker } from '@mui/x-date-pickers/DatePicker'
+import { calculateAge } from '@Utils/AgeCalculator.js'
 
 const PersonalInfoForm = () => {
   const { employeeInitialValues, payload, isLoading, dob, setDob } =
     usePersonalInfoFormController()
 
-  const { values, errors, touched, handleBlur, handleChange, handleSubmit } =
-    useFormik({
-      initialValues: employeeInitialValues,
-      validationSchema: personalInfoFormValidationSchema,
-      onSubmit: async (values) => {
-        console.log('VALUES"""""', { ...values, dob: dob?.toISOString() })
-        //   // await payload({
-        //   //   endpoint: USER_ENDPOINTS.UPDATE_USER_DETAILS,
-        //   //   method: 'PUT',
-        //   //   body: values
+  const {
+    values,
+    errors,
+    touched,
+    handleBlur,
+    handleChange,
+    handleSubmit,
+    resetForm
+  } = useFormik({
+    initialValues: employeeInitialValues,
+    validationSchema: personalInfoFormValidationSchema,
+    onSubmit: async (values, { resetForm }) => {
+      const body = {
+        ...values,
+        dob: dob.toISOString(),
+        age: dob ? calculateAge(dob) : 0
       }
-    })
+
+      await payload({
+        endpoint: USER_ENDPOINTS.UPDATE_USER_DETAILS,
+        method: 'PUT',
+        body
+      }).unwrap()
+    }
+  })
+
   return (
     <Box
       component="form"
@@ -506,7 +521,12 @@ const PersonalInfoForm = () => {
           size="small"
         />
       </Box>
-      <Button type={'submit'} loading={isLoading}>
+      <Button
+        type={'submit'}
+        loading={isLoading}
+        variant="contained"
+        color="success"
+      >
         Save Changes
       </Button>
     </Box>
@@ -551,6 +571,12 @@ export const usePersonalInfoFormController = () => {
     }
   }, [isError, error])
 
-  return { employeeInitialValues, payload, isLoading, dob, setDob }
+  return {
+    employeeInitialValues,
+    payload,
+    isLoading,
+    dob,
+    setDob
+  }
 }
 export default PersonalInfoForm

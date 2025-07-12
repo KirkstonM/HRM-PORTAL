@@ -9,7 +9,9 @@ const initialState = {
     resetPasswordEmail: '',
     resetLinkSubmitted: null
   },
-  userData: null
+  userData: null,
+  allEmployees: null,
+  selectedEmployee: null
 }
 
 const AppSlice = createSlice({
@@ -36,6 +38,18 @@ const AppSlice = createSlice({
     },
     setUserData: (state, action) => {
       state.userData = action.payload
+    },
+    loadAllUsers: (state, action) => {
+      state.allEmployees = action.payload
+    },
+    filterUserData: (state, action) => {
+      console.log(action)
+      const emp = state.allEmployees.find(
+        (emp) => emp?._id === action.payload.id
+      )
+      if (emp) {
+        state.selectedEmployee = emp
+      }
     }
   }
 })
@@ -47,6 +61,8 @@ export const {
   setNewUserEmail,
   setResetPasswordEmail,
   toggleResetPasswordSubmitted,
-  setUserData
+  setUserData,
+  loadAllUsers,
+  filterUserData
 } = AppSlice.actions
 export default AppSlice.reducer

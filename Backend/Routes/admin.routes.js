@@ -7,7 +7,11 @@ import {
   getSingleUser,
   getAllLeaveRequests,
   updateLeaveStatus,
-  addLeave
+  addLeave,
+  adminUpdateUser,
+  getPieChartLeaveData,
+  monthlyBreakdownLeaveData,
+  employeeChartData
 } from '../Controllers/admin.controller.js'
 
 const router = express.Router()
@@ -43,5 +47,30 @@ router.put(
 )
 
 router.post('/admin/add-leaves', checkAuthentication, isAdmin, addLeave)
+router.patch(
+  '/admin/update-user/:id',
+  checkAuthentication,
+  isAdmin,
+  adminUpdateUser
+)
+
+router.get(
+  '/admin/pie-chart-leave-data',
+  checkAuthentication,
+  isAdmin,
+  getPieChartLeaveData
+)
+router.get(
+  '/admin/bar-chart-leave-data',
+  checkAuthentication,
+  isAdmin,
+  monthlyBreakdownLeaveData
+)
+router.get(
+  '/admin/emp-chart-data',
+  checkAuthentication,
+  isAdmin,
+  employeeChartData
+)
 
 export default router

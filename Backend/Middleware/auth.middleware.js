@@ -1,5 +1,4 @@
 import jwt from 'jsonwebtoken'
-import AuthModel from '../Schemas/auth.schema.js'
 import UserModel from '../Schemas/user.schema.js'
 
 const checkAuthentication = async (req, res, next) => {

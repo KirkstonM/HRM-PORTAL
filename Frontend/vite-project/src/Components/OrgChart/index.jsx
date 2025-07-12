@@ -10,7 +10,7 @@ const OrgChartTree = () => {
 
   const renderNode = ({ nodeDatum, toggleNode }) => {
     return (
-      <foreignObject width={120} height={200} x={-60} y={-90}>
+      <foreignObject width={180} height={180} x={-90} y={-100}>
         <Box
           onClick={toggleNode}
           sx={{
@@ -18,16 +18,32 @@ const OrgChartTree = () => {
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            border: '1px solid #ccc',
+            justifyContent: 'center',
+            border: '1px solid #e0e0e0',
             borderRadius: 100,
-            padding: 1,
+            padding: 2,
             backgroundColor: '#fff',
-            boxShadow: 2,
+            boxShadow: 1,
             transition: 'all 0.2s',
-            '&:hover': { boxShadow: 4 }
+            '&:hover': {
+              boxShadow: 3,
+              transform: 'scale(1.02)',
+              borderColor: '#1976d2'
+            },
+            height: '100%',
+            width: '100%'
           }}
         >
-          <Avatar src={nodeDatum.image} sx={{ width: 40, height: 40, mb: 1 }} />
+          <Avatar
+            src={nodeDatum.image}
+            sx={{
+              width: 56,
+              height: 56,
+              mb: 1.5,
+              border: '2px solid #f5f5f5'
+            }}
+          />
+
           <Typography variant="subtitle2" fontWeight="bold">
             {nodeDatum.name}
           </Typography>
@@ -49,6 +65,20 @@ const OrgChartTree = () => {
         collapsible
         zoomable
         enableLegacyTransitions
+        separation={{
+          siblings: 1.5,
+          nonSiblings: 2
+        }}
+        pathFunc="step"
+        nodeSize={{ x: 200, y: 220 }}
+        initialDepth={1}
+        depthFactor={250}
+        styles={{
+          links: {
+            stroke: '#bdbdbd',
+            strokeWidth: 2
+          }
+        }}
       />
     </Box>
   )

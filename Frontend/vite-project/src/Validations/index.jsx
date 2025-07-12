@@ -118,10 +118,32 @@ const addEmployeeValidation = Yup.object().shape({
   reporting_manager: Yup.string().nullable(),
   job_title: Yup.string().required('Please add a job title')
 })
+
+const updateEmployeeValidation = Yup.object().shape({
+  job_title: Yup.string().required('Job title is required'),
+  reporting_manager: Yup.string().nullable(),
+
+  leaveUpdates: Yup.array()
+    .of(
+      Yup.object().shape({
+        leaveType: Yup.string()
+          .oneOf(['casual', 'annual', 'medical'], 'Invalid leave type')
+          .required('Leave type is required'),
+        amount: Yup.number()
+          .typeError('Amount must be a number')
+          .min(0, 'Amount cannot be negative')
+          .required('Amount is required'),
+        description: Yup.string().nullable()
+      })
+    )
+    .nullable()
+})
+
 export {
   loginFormValidation,
   passwordValidationSchema,
   personalInfoFormValidationSchema,
   emergencyInfoFormValidation,
-  addEmployeeValidation
+  addEmployeeValidation,
+  updateEmployeeValidation
 }

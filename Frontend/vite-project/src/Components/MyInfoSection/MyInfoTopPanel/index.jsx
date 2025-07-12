@@ -1,9 +1,12 @@
 import React, { useState } from 'react'
-import { Box, Button, Typography } from '@mui/material'
+import { Avatar, Box, Button, Typography } from '@mui/material'
 import UserImage from '@Assets/user.png'
 import MyInfoTabs from '@Components/MyInfoSection/MyInfoTabs/index.jsx'
+import { useSelector } from 'react-redux'
+import ProfilePictureUploader from '@Components/PictureUploader/index.jsx'
 
 const MyInfoTopTab = () => {
+  const { userData } = useMyInfoTopTabController()
   return (
     <Box
       sx={{
@@ -17,23 +20,22 @@ const MyInfoTopTab = () => {
         borderBottom: '1px solid #ccc'
       }}
     >
-      <Box
-        sx={{ width: 100, height: 100, borderRadius: 2, overflow: 'hidden' }}
-      >
-        <img
-          src={UserImage}
-          alt="User"
-          style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-        />
+      <Box sx={{ width: 100, height: 100, borderRadius: 2 }}>
+        <ProfilePictureUploader {...userData} />
       </Box>
       <Box>
-        <Typography variant="h6">FULL NAME</Typography>
+        <Typography variant="h6">{userData?.full_name}</Typography>
         <Typography variant="subtitle2" color="textSecondary">
-          Job title
+          {userData?.job_title}
         </Typography>
       </Box>
     </Box>
   )
+}
+
+const useMyInfoTopTabController = () => {
+  const userData = useSelector((state) => state.employee?.employeeData)
+  return { userData }
 }
 
 export default MyInfoTopTab

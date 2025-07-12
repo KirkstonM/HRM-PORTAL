@@ -1,10 +1,10 @@
 const USER_ROUTES = {
-  HOME: '/home',
-  MY_INFO: '/employee',
-  PEOPLE: '/people',
-  FILES: '/files',
-  CALENDER: '/calender',
-  ADMIN: '/admin'
+  HOME: '/user/home',
+  MY_INFO: '/user/employee',
+  PEOPLE: '/user/people',
+  FILES: '/user/files',
+  CALENDER: '/user/calender',
+  CHANGE_PASSWORD: '/user/change-password'
 }
 
 const LOGIN_ROUTES = {
@@ -22,7 +22,9 @@ const ADMIN_ROUTES = {
   CALENDER: '/admin/calendar',
   LEAVES: '/admin/leaves',
   PAYROLL: '/admin/payroll',
-  MY_INFO: '/admin/info'
+  MY_INFO: '/admin/info',
+  CHANGE_PASSWORD: '/admin/change-password',
+  SINGLE_EMPLOYEE: '/admin/single-employee/:id'
 }
 
 export { USER_ROUTES, LOGIN_ROUTES, ADMIN_ROUTES }

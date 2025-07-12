@@ -1,7 +1,5 @@
 import UserModel from '../Schemas/user.schema.js'
-import LeaveRequestModel from '../Schemas/leaveRequest.schema.js'
 import bcrypt from 'bcrypt'
-import AuthModel from '../Schemas/auth.schema.js'
 import crypto from 'crypto'
 import { generateTokenAndCookies } from '../Utils/authTokenCookies.js'
 import LeaveModel from '../Schemas/leave.schema.js'
@@ -144,10 +142,8 @@ const resetPassword = async (req, res) => {
         .status(400)
         .json({ success: false, msg: 'Invalid or expired token' })
     }
-    const salt = await bcrypt.genSaltSync(10)
-    const hashPassword = await bcrypt.hashSync(password, salt)
 
-    user.password = hashPassword
+    user.password = password
     user.resetToken = undefined
     user.resetTokenExpireTime = undefined
 
@@ -324,24 +320,76 @@ const getOrgTree = async (req, res) => {
 const getCalendarHolidays = async (req, res) => {
   try {
     const userId = req.user.id
-    const leaves = await LeaveModel.find({ user: userId, status: 'approved' })
-    const myLeaves = leaves?.map((leave) => {
-      const newFromDate = new Date(leave?.fromDate).toISOString()
-      const newToDate = new Date(leave?.toDate).toISOString()
-      return {
-        title: leave?.reason,
-        start: calendarDateConvertor(newFromDate),
-        end: calendarDateConvertor(newToDate) || undefined,
-        extendedProps: {
-          type: 'Vacation',
-          color: '#008000'
-        }
-      }
+    const leaves = await LeaveModel.find({
+      user: userId,
+      status: 'approved'
     })
+    console.log(leaves)
+    const myLeaves = leaves.map((leave) => ({
+      title: leave?.reason || 'Leave',
+      start: calendarDateConvertor(new Date(leave.fromDate).toISOString()),
+      end: leave.toDate
+        ? calendarDateConvertor(new Date(leave.toDate).toISOString())
+        : undefined,
+      extendedProps: {
+        type: 'Vacation',
+        color: '#008000'
+      }
+    }))
+
     const customLeaves = [...sriLankaHolidays, ...myLeaves]
+
     res.status(200).json({ success: true, data: customLeaves })
   } catch (err) {
-    res.status(500).json({ error: err.msg })
+    res.status(500).json({ error: err.message })
+  }
+}
+
+const uploadProfilePicture = async (req, res) => {
+  try {
+    const userId = req.user.id
+
+    if (!req.file) {
+      return res.status(400).json({ success: false, msg: 'No file uploaded' })
+    }
+
+    const imagePath = `/uploads/${req.file.filename}`
+
+    const updatedUser = await UserModel.findByIdAndUpdate(
+      userId,
+      { profilePicture: imagePath },
+      { new: true }
+    )
+
+    res.status(200).json({
+      success: true,
+      msg: 'Profile picture uploaded',
+      imagePath: updatedUser.profilePicture
+    })
+  } catch (error) {
+    console.error(error)
+    res.status(500).json({ success: false, msg: 'Upload failed' })
+  }
+}
+
+const getUpcomingBirthdays = async (req, res) => {
+  try {
+    const now = new Date()
+    const currentMonth = now.getMonth()
+
+    const users = await UserModel.find({
+      dob: { $exists: true }
+    })
+
+    const filtered = users.filter((user) => {
+      const dob = new Date(user.dob)
+      return dob.getMonth() === currentMonth
+    })
+
+    res.status(200).json({ data: filtered })
+  } catch (error) {
+    console.error('Error fetching birthdays:', error)
+    res.status(500).json({ message: 'Server error' })
   }
 }
 
@@ -357,5 +405,7 @@ export {
   accruedLeaves,
   checkAuth,
   getOrgTree,
-  getCalendarHolidays
+  getCalendarHolidays,
+  uploadProfilePicture,
+  getUpcomingBirthdays
 }

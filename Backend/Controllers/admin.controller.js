@@ -3,6 +3,7 @@ import { generateTokenAndCookies } from '../Utils/authTokenCookies.js'
 import bcrypt from 'bcrypt'
 import AuthModel from '../Schemas/auth.schema.js'
 import LeaveModel from '../Schemas/leave.schema.js'
+import offboardModel from '../Schemas/offboard.schema.js'
 
 const createUser = async (req, res) => {
   try {
@@ -20,15 +21,12 @@ const createUser = async (req, res) => {
     const existing = await UserModel.findOne({ email })
     if (existing) return res.status(400).json({ msg: 'User already exists' })
 
-    const salt = await bcrypt.genSaltSync(10)
-    const hashPassword = await bcrypt.hashSync(password, salt)
-
     const user = new UserModel({
       first_name,
       last_name,
       full_name,
       email,
-      password: hashPassword,
+      password,
       role,
       reporting_manager,
       job_title
@@ -51,7 +49,7 @@ const createUser = async (req, res) => {
 
     await user.save()
 
-    generateTokenAndCookies(res, user._id)
+    // generateTokenAndCookies(res, user._id)
     res.status(201).json({
       msg: 'User created successfully',
       employee_id: user.employee_id,
@@ -85,13 +83,17 @@ const getSingleUser = async (req, res) => {
 const deleteUser = async (req, res) => {
   try {
     const user = await UserModel.findById(req.params.id)
-
+    console.log(req.params.id)
     if (!user) {
       return res.status(404).json({ msg: 'User not found' })
     }
 
-    await user.deleteOne()
-
+    if (user) {
+      await offboardModel.create({
+        email: user.email
+      })
+    }
+    await UserModel.findByIdAndDelete(req.params.id)
     res.status(200).json({ msg: 'User permanently deleted' })
   } catch (error) {
     res.status(500).json({ msg: 'Server error', error: error.msg })
@@ -207,6 +209,218 @@ const addLeave = async (req, res) => {
   }
 }
 
+const adminUpdateUser = async (req, res) => {
+  try {
+    const userId = req.params.id
+    const { job_title, reporting_manager, leaveUpdates } = req.body
+
+    const user = await UserModel.findById(userId)
+    if (!user) {
+      return res.status(404).json({ success: false, msg: 'User not found' })
+    }
+
+    if (job_title) {
+      user.job_title = job_title
+    }
+
+    if (
+      reporting_manager &&
+      reporting_manager !== String(user.reporting_manager)
+    ) {
+      user.reporting_manager = reporting_manager
+
+      const managerUser = await UserModel.findById(reporting_manager).select(
+        'first_name last_name'
+      )
+      const manager_name = managerUser
+        ? `${managerUser.first_name} ${managerUser.last_name}`
+        : 'Unknown'
+
+      user.manager_history.push({
+        manager: reporting_manager,
+        manager_name: manager_name,
+        assignedAt: new Date()
+      })
+    }
+
+    if (Array.isArray(leaveUpdates)) {
+      for (const leave of leaveUpdates) {
+        const { leaveType, amount, description } = leave
+
+        if (!['casual', 'annual', 'medical'].includes(leaveType)) {
+          return res
+            .status(400)
+            .json({ success: false, msg: `Invalid leave type: ${leaveType}` })
+        }
+
+        const parsedAmount = parseFloat(amount)
+        if (isNaN(parsedAmount)) {
+          return res.status(400).json({
+            success: false,
+            msg: `Invalid leave amount for ${leaveType}`
+          })
+        }
+
+        user.leaveBalance[leaveType] += parsedAmount
+
+        user.leaveHistory.push({
+          date: new Date(),
+          type: 'accrual',
+          leaveType,
+          description:
+            description ||
+            `Admin manually added ${parsedAmount} ${leaveType} leave`,
+          accrued: parsedAmount,
+          used: 0,
+          balance: user.leaveBalance[leaveType]
+        })
+      }
+    }
+
+    await user.save()
+
+    res.status(200).json({
+      success: true,
+      msg: 'User updated successfully',
+      data: {
+        job_title: user.job_title,
+        reporting_manager: user.reporting_manager,
+        leaveBalance: user.leaveBalance
+      }
+    })
+  } catch (err) {
+    console.error('Error in adminUpdateUser:', err)
+    res.status(500).json({ success: false, msg: 'Internal server error' })
+  }
+}
+
+const getPieChartLeaveData = async (req, res) => {
+  try {
+    const result = await LeaveModel.aggregate([
+      { $match: { status: 'approved' } }, //remove this if you want all leaves
+      {
+        $group: {
+          _id: '$leaveType',
+          value: { $sum: 1 }
+        }
+      },
+      {
+        $project: {
+          _id: 0,
+          name: {
+            $switch: {
+              branches: [
+                { case: { $eq: ['$_id', 'casual'] }, then: 'Casual Leave' },
+                { case: { $eq: ['$_id', 'medical'] }, then: 'Medical Leave' },
+                { case: { $eq: ['$_id', 'annual'] }, then: 'Annual Leave' }
+              ],
+              default: 'Other'
+            }
+          },
+          value: 1
+        }
+      }
+    ])
+
+    res.status(200).json({ success: true, data: result })
+  } catch (error) {
+    console.error('Pie Chart Error:', error)
+    res.status(500).json({ msg: 'Server error' })
+  }
+}
+
+const monthlyBreakdownLeaveData = async (req, res) => {
+  try {
+    const result = await LeaveModel.aggregate([
+      { $match: { status: 'approved' } },
+      {
+        $group: {
+          _id: {
+            month: { $month: '$fromDate' },
+            leaveType: '$leaveType'
+          },
+          count: { $sum: 1 }
+        }
+      },
+      {
+        $group: {
+          _id: '$_id.month',
+          leaves: {
+            $push: {
+              k: '$_id.leaveType',
+              v: '$count'
+            }
+          }
+        }
+      },
+      {
+        $project: {
+          _id: 0,
+          month: '$_id',
+          leaves: {
+            $arrayToObject: '$leaves'
+          }
+        }
+      },
+      {
+        $project: {
+          month: {
+            $arrayElemAt: [
+              [
+                '',
+                'Jan',
+                'Feb',
+                'Mar',
+                'Apr',
+                'May',
+                'Jun',
+                'Jul',
+                'Aug',
+                'Sep',
+                'Oct',
+                'Nov',
+                'Dec'
+              ],
+              '$month'
+            ]
+          },
+          casual: { $ifNull: ['$leaves.casual', 0] },
+          medical: { $ifNull: ['$leaves.medical', 0] },
+          annual: { $ifNull: ['$leaves.annual', 0] }
+        }
+      }
+    ])
+    res.status(200).json({ success: true, data: result })
+  } catch (error) {
+    console.error('Pie Chart Error:', error)
+    res.status(500).json({ msg: 'Server error' })
+  }
+}
+
+const employeeChartData = async (req, res) => {
+  try {
+    const totalEmployees = await UserModel.countDocuments()
+    const resignedEmployees = await offboardModel.countDocuments()
+
+    const onLeaveNow = await LeaveModel.countDocuments({
+      fromDate: { $lte: new Date() },
+      toDate: { $gte: new Date() },
+      status: 'approved'
+    })
+
+    const constructData = [
+      { label: 'New Employee', value: totalEmployees },
+      { label: 'Resign Employee', value: resignedEmployees },
+      { label: 'Employee on Leave', value: onLeaveNow }
+    ]
+
+    res.status(200).json({ success: true, data: constructData })
+  } catch (error) {
+    console.error('Pie Chart Error:', error)
+    res.status(500).json({ msg: 'Server error' })
+  }
+}
+
 export {
   createUser,
   deleteUser,
@@ -214,5 +428,9 @@ export {
   getSingleUser,
   getAllLeaveRequests,
   updateLeaveStatus,
-  addLeave
+  addLeave,
+  adminUpdateUser,
+  getPieChartLeaveData,
+  monthlyBreakdownLeaveData,
+  employeeChartData
 }

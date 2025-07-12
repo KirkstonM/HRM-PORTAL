@@ -1,113 +1,106 @@
 import React from 'react'
-import { Avatar, Box, Card, Divider, Typography } from '@mui/material'
-import CelebrationOutlinedIcon from '@mui/icons-material/CelebrationOutlined'
-import ProfileImage from '@Assets/user.png'
-import { blue, grey } from '@mui/material/colors'
-import CakeOutlinedIcon from '@mui/icons-material/CakeOutlined'
-
-const birthdays = [
-  {
-    name: 'Faz Syahirah Binter Feroz',
-    birthday: 'January 15th'
-  },
-  {
-    name: 'Isabella Sidik',
-    birthday: 'January 15th'
-  },
-  {
-    name: 'Johnathan Wayne Biing',
-    birthday: 'January 15th'
-  },
-  {
-    name: 'Johnty Rhodes',
-    birthday: 'January 15th'
-  },
-  {
-    name: 'John',
-    birthday: 'January 15th'
-  }
-]
+import { Box, Typography, Avatar, Paper, Divider, Chip } from '@mui/material'
+import { CalendarMonth, Cake } from '@mui/icons-material'
 
 const CelebrationBox = () => {
+  // Sample data - replace with your actual data
+  const birthdays = [
+    {
+      name: 'Devon Shell',
+      date: 'Jun 20',
+      department: 'Engineering',
+      avatar: '/avatars/devon.jpg'
+    },
+    {
+      name: 'Sarah Johnson',
+      date: 'Jun 25',
+      department: 'Marketing',
+      avatar: '/avatars/sarah.jpg'
+    },
+    {
+      name: 'Michael Chen',
+      date: 'Jun 28',
+      department: 'Design',
+      avatar: '/avatars/michael.jpg'
+    }
+  ]
+
   return (
-    <Card
-      elevation={1}
+    <Paper
+      elevation={3}
       sx={{
-        border: 1,
-        borderColor: 'border.primary',
-        borderRadius: 2,
-        paddingY: 1,
-        paddingX: 2,
-        background: 'inherit'
-        // maxHeight: '400px',
-        // overflowY: 'scroll'
+        borderRadius: 4,
+        p: 3,
+        background: 'linear-gradient(135deg, #f5f7fa 0%, #f8f9fa 100%)',
+        height: '100%'
       }}
     >
-      <Box
-        sx={{
-          borderBottomWidth: 1,
-          borderBottomColor: 'border.primary',
-          paddingY: 1,
-          display: 'flex',
-          alignItems: 'center'
-        }}
-      >
-        <CelebrationOutlinedIcon sx={{ color: 'color.blue.primary' }} />
-        <Typography
-          sx={{
-            ml: 1,
-            fontWeight: 500,
-            color: 'color.blue.primary'
-          }}
-        >
-          Celebrations
+      <Box display="flex" alignItems="center" mb={2}>
+        <CalendarMonth color="primary" sx={{ fontSize: 28, mr: 1.5 }} />
+        <Typography variant="h6" fontWeight="bold" color="text.primary">
+          Upcoming Birthdays This Month
         </Typography>
       </Box>
-      {birthdays.map(({ name, birthday }, index) => (
-        <>
-          <Box
-            key={index}
-            sx={{
-              display: 'flex',
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              marginTop: 2,
-              maxHeight: '100px',
-              paddingY: 0.7
-            }}
-          >
-            <Box
-              sx={{
-                flex: 1,
-                display: 'flex',
-                flexDirection: 'row',
-                alignItems: 'center'
-              }}
-            >
-              <Avatar src={ProfileImage} />
-              <Box sx={{ display: 'flex', flexDirection: 'column', ml: 2 }}>
-                <Typography sx={{ fontSize: '12px' }}>{name}</Typography>
-                <Typography
-                  sx={{ fontSize: '11px', color: 'color.grey.primary' }}
-                >
-                  {birthday} - Happy Birthday!
-                </Typography>
-              </Box>
-            </Box>
-            <Box>
-              <CakeOutlinedIcon color={'disabled'} />
-            </Box>
-          </Box>
-          <Divider />
-        </>
-      ))}
-    </Card>
-  )
-}
 
-const useCelebrationController = () => {
-  return {}
+      <Divider sx={{ mb: 2 }} />
+
+      {birthdays.length === 0 ? (
+        <Typography
+          variant="body2"
+          color="text.secondary"
+          textAlign="center"
+          py={2}
+        >
+          No birthdays this month
+        </Typography>
+      ) : (
+        <Box>
+          {birthdays.map((person, index) => (
+            <React.Fragment key={person.name}>
+              <Box display="flex" alignItems="center" py={2}>
+                <Avatar
+                  src={person.avatar}
+                  sx={{
+                    width: 56,
+                    height: 56,
+                    mr: 2,
+                    border: '2px solid #fff',
+                    boxShadow: 1
+                  }}
+                />
+                <Box flexGrow={1}>
+                  <Typography variant="subtitle1" fontWeight="bold">
+                    {person.name}
+                  </Typography>
+                  <Box display="flex" alignItems="center" mt={0.5}>
+                    <Cake color="secondary" sx={{ fontSize: 16, mr: 0.5 }} />
+                    <Typography variant="body2" color="text.secondary">
+                      {person.date}
+                    </Typography>
+                  </Box>
+                  <Chip
+                    label={person.department}
+                    size="small"
+                    sx={{
+                      mt: 1,
+                      backgroundColor: 'rgba(25, 118, 210, 0.1)',
+                      color: 'primary.main'
+                    }}
+                  />
+                </Box>
+              </Box>
+              {index < birthdays.length - 1 && (
+                <Divider
+                  variant="middle"
+                  sx={{ borderColor: 'rgba(0, 0, 0, 0.05)' }}
+                />
+              )}
+            </React.Fragment>
+          ))}
+        </Box>
+      )}
+    </Paper>
+  )
 }
 
 export default CelebrationBox

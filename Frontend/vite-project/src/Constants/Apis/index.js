@@ -22,7 +22,9 @@ export const USER_ENDPOINTS = {
   APPLY_LEAVE: '/user/leave/apply',
   LEAVE_REQUESTS: '/user/leave/my-requests',
   ORG_TREE: '/org-tree',
-  CALENDAR: '/calendar-leaves'
+  CALENDAR: '/calendar-leaves',
+  UPLOAD_IMAGE: '/upload-profile-pic',
+  BIRTHDAYS: '/birthdays'
 }
 
 /************* ADMIN API ENDPOINTS *****************/
@@ -34,5 +36,9 @@ export const ADMIN_ENDPOINTS = {
   GET_EMPLOYEE: '/admin/get-user/:id',
   GET_ALL_LEAVES: '/admin/get-all-leaves',
   APPROVE_LEAVES: '/admin/approve-leaves',
-  ADD_LEAVES: '/admin/add-leaves'
+  ADD_LEAVES: '/admin/add-leaves',
+  UPDATE_USER: '/admin/update-user/',
+  LEAVE_PIE_CHART: '/admin/pie-chart-leave-data',
+  LEAVE_BAR_CHART: '/admin/bar-chart-leave-data',
+  EMPLOYEE_DATA: '/admin/emp-chart-data'
 }
