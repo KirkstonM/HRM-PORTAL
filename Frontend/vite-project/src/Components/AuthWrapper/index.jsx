@@ -21,7 +21,7 @@ const AuthWrapper = () => {
 
   const isAuthorized =
     (isAdminRoute && role.toLowerCase() === 'admin') ||
-    (isUserRoute && ['admin', 'user', 'manager'].includes(role))
+    (isUserRoute && ['admin', 'user'].includes(role))
 
   return isAuthorized ? <Outlet /> : <Navigate to="/unauthorized" replace />
 }

@@ -46,7 +46,8 @@ const EmployeeLeaveTable = () => {
     modalClose,
     callbackUpdate,
     selectedId,
-    mappedList
+    mappedList,
+    handleChange
   } = useEmployeeTableController()
   const [anchorEl, setAnchorEl] = React.useState(null)
   const [selectedRow, setSelectedRow] = React.useState(null)
@@ -73,6 +74,15 @@ const EmployeeLeaveTable = () => {
       <Typography variant="h6" gutterBottom>
         Employees Status
       </Typography>
+      <TextField
+        name="finder"
+        type="text"
+        onChange={handleChange}
+        id="finder"
+        sx={{ width: '100%' }}
+        size="small"
+        placeholder="Search for employee"
+      />
       <TableContainer>
         <Table>
           <TableHead>
@@ -163,6 +173,7 @@ const EmployeeLeaveTable = () => {
 const useEmployeeTableController = () => {
   const [open, setOpen] = useState(false)
   const [selectedId, setSelectedId] = useState(null)
+  const [finder, setFinder] = useState('')
 
   const modalOpen = () => setOpen(true)
   const modalClose = () => setOpen(false)
@@ -183,7 +194,16 @@ const useEmployeeTableController = () => {
 
   const employeeList = employees?.data || []
 
-  const mappedList = [...(employeeList || [])].sort((a, b) =>
+  // const nonAdminList = employeeList?.filter((emp) => emp?.role.toLowerCase() !== 'admin') //if we dont want admins
+
+  const handleChange = (e) => {
+    setFinder(e.target.value)
+  }
+
+  const filterList = employeeList.filter((emp) => {
+    return emp?.first_name?.toLowerCase().includes(finder.toLowerCase())
+  })
+  const mappedList = filterList?.sort((a, b) =>
     a.first_name.toLowerCase().localeCompare(b?.first_name.toLowerCase())
   )
 
@@ -237,7 +257,8 @@ const useEmployeeTableController = () => {
     modalClose,
     callbackUpdate,
     selectedId,
-    mappedList
+    mappedList,
+    handleChange
   }
 }
 

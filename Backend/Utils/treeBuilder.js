@@ -6,7 +6,7 @@ export const buildTree = (users) => {
     idMap.set(user._id.toString(), {
       name: user.full_name || `${user.first_name} ${user.last_name}`,
       title: user.job_title || 'Employee',
-      image: `https://i.pravatar.cc/150?u=${user.email}`,
+      image: user?.profilePicture || null,
       children: []
     })
   })
