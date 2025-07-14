@@ -9,10 +9,13 @@ import { useDispatch } from 'react-redux'
 import { loadAllUsers } from '@Redux/Slices/AppSlice.js'
 
 const AdminDashboard = () => {
-  const { employeeStatData } = useAdminController()
+  const { employeeStatData, refreshAPI } = useAdminController()
   return (
     <AppLayout>
-      <DashboardStats employeeStatData={employeeStatData} />
+      <DashboardStats
+        employeeStatData={employeeStatData}
+        statRefresh={refreshAPI}
+      />
       <Box>
         <EmployeeTable />
       </Box>
@@ -27,6 +30,8 @@ const useAdminController = () => {
 
   const employeeStatData = employees?.data || []
 
-  return { employeeStatData }
+  const refreshAPI = () => refetch()
+
+  return { employeeStatData, refreshAPI }
 }
 export default AdminDashboard

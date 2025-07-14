@@ -282,9 +282,13 @@ const EmergencyContactForm = () => {
           ))}
         </TextField>
       </Box>
-      <Button type={'submit'} loading={isLoading}>
-        {' '}
-        Save Changes{' '}
+      <Button
+        type={'submit'}
+        loading={isLoading}
+        variant="contained"
+        color="success"
+      >
+        Save Changes
       </Button>
     </Box>
   )

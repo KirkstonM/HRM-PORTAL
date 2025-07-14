@@ -24,7 +24,8 @@ const ADMIN_ROUTES = {
   PAYROLL: '/admin/payroll',
   MY_INFO: '/admin/info',
   CHANGE_PASSWORD: '/admin/change-password',
-  SINGLE_EMPLOYEE: '/admin/single-employee/:id'
+  SINGLE_EMPLOYEE: '/admin/single-employee/:id',
+  ORG_CHART: '/admin/people'
 }
 
 export { USER_ROUTES, LOGIN_ROUTES, ADMIN_ROUTES }

@@ -3,12 +3,13 @@ import Tree from 'react-d3-tree'
 import { Box, Typography, Avatar } from '@mui/material'
 import { useBaseQueryQuery } from '@Redux/RTKQuery/HttpRequest.js'
 import { USER_ENDPOINTS } from '@Constants/Apis/index.js'
+import BlankProfile from './blank_profile.jpg'
 
 const OrgChartTree = () => {
   const { orgTree } = useOrgChartController()
   const treeRef = useRef()
-
   const renderNode = ({ nodeDatum, toggleNode }) => {
+    const userProfilePic = import.meta.env.VITE_API_URL + nodeDatum?.image
     return (
       <foreignObject width={180} height={180} x={-90} y={-100}>
         <Box
@@ -24,6 +25,7 @@ const OrgChartTree = () => {
             padding: 2,
             backgroundColor: '#fff',
             boxShadow: 1,
+            textAlign: 'center',
             transition: 'all 0.2s',
             '&:hover': {
               boxShadow: 3,
@@ -35,7 +37,7 @@ const OrgChartTree = () => {
           }}
         >
           <Avatar
-            src={nodeDatum.image}
+            src={nodeDatum.image ? userProfilePic : BlankProfile}
             sx={{
               width: 56,
               height: 56,
@@ -58,7 +60,7 @@ const OrgChartTree = () => {
   return (
     <Box sx={{ width: '100%', height: '100vh' }}>
       <Tree
-        data={{ name: 'ACME Corp', title: 'Org Chart', children: orgTree }}
+        data={{ name: 'Avlyon', children: orgTree }}
         orientation="vertical"
         translate={{ x: 500, y: 100 }}
         renderCustomNodeElement={renderNode}

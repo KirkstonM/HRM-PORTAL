@@ -53,7 +53,6 @@ const SideNavigationBar = ({
         height: '100%'
       }}
     >
-      {/* Logo and toggle */}
       <Box
         sx={{
           display: 'flex',
@@ -64,7 +63,7 @@ const SideNavigationBar = ({
       >
         {!collapsed && (
           <Typography variant="h6" fontWeight="bold">
-            📄 Pagedone
+            Avlyon
           </Typography>
         )}
         <IconButton onClick={handleDrawerToggle}>
@@ -161,7 +160,7 @@ const useNavigationController = (isAdmin) => {
     },
     {
       icon: <People />,
-      text: 'People',
+      text: 'Org Chart',
       onClick: () => navigation(USER_ROUTES.PEOPLE)
     },
     {
@@ -211,6 +210,11 @@ const useNavigationController = (isAdmin) => {
       icon: <Info />,
       text: 'My Info',
       onClick: () => navigation(ADMIN_ROUTES.MY_INFO)
+    },
+    {
+      icon: <People />,
+      text: 'Org Chart',
+      onClick: () => navigation(ADMIN_ROUTES.ORG_CHART)
     },
     {
       icon: <Password />,

@@ -105,6 +105,10 @@ const ADMIN_BASE_ROUTES = [
   {
     Path: ADMIN_ROUTES.SINGLE_EMPLOYEE,
     Component: SingleEmployeePage
+  },
+  {
+    Path: ADMIN_ROUTES.ORG_CHART,
+    Component: PeoplePage
   }
 ]
 
